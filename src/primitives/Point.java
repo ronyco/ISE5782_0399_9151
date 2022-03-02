@@ -25,10 +25,10 @@ public class Point {
     protected Point(Double3 xyz) {
         this.xyz = xyz;
     }
-    /*
+
     public Vector Point(Point p2) {
         return new Vector(xyz.subtract(p2.xyz));
-    }*/
+    }
 
     /**
      * Adds a vector to point where each couple of numbers is added
