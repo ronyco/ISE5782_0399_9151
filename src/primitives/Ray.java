@@ -1,5 +1,8 @@
 package primitives;
 
+/**
+ * Ray class represents a ray in three dimension space, meaning a point with a one-sided direction
+ */
 public class Ray {
     Point p0;
     Vector dir;
