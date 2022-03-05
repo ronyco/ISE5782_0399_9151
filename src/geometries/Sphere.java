@@ -2,10 +2,16 @@ package geometries;
 
 import primitives.Point;
 import primitives.Vector;
+/**
+ * Sphere class represents two-dimensional Sphere in 3D Cartesian coordinate
+ */
 public class Sphere implements Geometry{
     Point center;
     double radius;
 
+    /**
+     * constructor
+     */
     public Sphere(){}
 
     public double getRadius() {

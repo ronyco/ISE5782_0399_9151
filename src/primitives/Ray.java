@@ -7,6 +7,11 @@ public class Ray {
     Point p0;
     Vector dir;
 
+    /**
+     * Constructor to initialize Ray with point and normal vector
+     * @param p0 for point
+     * @param dir for normal vector
+     */
     public Ray(Point p0, Vector dir){
         this.p0=p0;
         this.dir=dir.normalize();

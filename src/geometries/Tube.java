@@ -3,10 +3,16 @@ package geometries;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
-public class Tube implements Geometry {
+/**
+ * Tube class represents two-dimensional Tube in 3D Cartesian coordinate
+ */
+ public class Tube implements Geometry {
     Ray axisRay;
     double radius;
 
+    /**
+     * constructor
+     */
     public Tube(){}
 
     public double getRadius() {
