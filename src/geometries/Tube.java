@@ -13,7 +13,10 @@ import primitives.Vector;
     /**
      * constructor
      */
-    public Tube(){}
+    public Tube(Ray ray, double rad){
+        axisRay=ray;
+        radius=rad;
+    }
 
     public double getRadius() {
         return radius;

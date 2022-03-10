@@ -1,7 +1,7 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
+
 
 /**
  * the class plane represents a plane in the three dimension
@@ -17,7 +17,7 @@ public class Plane implements Geometry{
      * @param p3 third number value
      */
     public Plane(Point p1,Point p2, Point p3) {
-        normal = null;
+        normal = ((p1.subtract(p2)).crossProduct(p3.subtract(p1))).normalize();
         q0=p1;
 
     }

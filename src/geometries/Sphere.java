@@ -12,7 +12,10 @@ public class Sphere implements Geometry{
     /**
      * constructor
      */
-    public Sphere(){}
+    public Sphere(Point c, double r){
+        center=c;
+        radius=r;
+    }
 
     public double getRadius() {
         return radius;
