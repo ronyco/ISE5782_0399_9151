@@ -8,6 +8,13 @@ import primitives.Vector;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlaneTest {
+    @org.junit.Test
+    public void testConstructor() {
+        assertThrows(IllegalArgumentException.class, () -> new Plane(new Point(1,2,3),new Point(1,2,3),
+        new Point(3,4,7)), "constructed a plane with points that coincide");
+        assertThrows(IllegalArgumentException.class, () -> new Plane(new Point(1,1,1),new Point(2,2,2),
+                new Point(3,3,3)), "constructed a plane with points on the same line");
+    }
 
     @Test
     void getNormal() {
