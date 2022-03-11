@@ -22,7 +22,5 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public Vector getNormal(Point point) {
-        return null;
-    }
+    public Vector getNormal(Point point) {return super.getNormal(point);}
 }

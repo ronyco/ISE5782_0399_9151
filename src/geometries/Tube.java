@@ -28,6 +28,8 @@ import primitives.Vector;
 
     @Override
     public Vector getNormal(Point p) {
-        return null;
+        double t= (axisRay.getDir()).dotProduct(p.subtract(axisRay.getP0()));
+        Point O = axisRay.getP0().add(axisRay.getDir().scale(t));
+        return (p.subtract(O)).normalize();
     }
 }
