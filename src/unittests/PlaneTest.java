@@ -4,8 +4,10 @@ import geometries.*;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
 import primitives.Vector;
-
 import static org.junit.jupiter.api.Assertions.*;
+import static java.lang.System.out;
+import static org.junit.Assert.*;
+
 
 class PlaneTest {
     @org.junit.Test
@@ -20,6 +22,7 @@ class PlaneTest {
     void getNormal() {
         Plane p = new Plane(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0));
         double sqrt3 = Math.sqrt(1d / 3);
-        assertEquals(new Vector(sqrt3, sqrt3, sqrt3), p.getNormal(new Point(0, 0, 1)), "Bad normal to plane");
+        assertTrue("ERROR:Bad normal to plane", p.getNormal(new Point(0, 0, 1)).equals(new Vector(sqrt3, sqrt3, sqrt3))||
+                p.getNormal(new Point(0, 0, 1)).equals(new Vector(sqrt3*(-1), sqrt3*(-1), sqrt3*(-1))));
     }
 }
