@@ -10,9 +10,9 @@ public class Point {
     /**
      * Constructor to initialize Point with three number values
      *
-     * @param x first number value
-     * @param y second number value
-     * @param z third number value
+     * @param x first number coordinate
+     * @param y second number coordinate
+     * @param z third number coordinate
      */
     public Point(double x, double y, double z) {
         xyz = new Double3(x,y,z);

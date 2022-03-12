@@ -10,6 +10,9 @@ import primitives.Vector;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TubeTest {
+    /**
+     * test get normal function
+     */
     @Test
     void getNormal() {
         Tube t = new Tube(new Ray(new Point(2,2,2),new Vector(0,0,1)),1);
