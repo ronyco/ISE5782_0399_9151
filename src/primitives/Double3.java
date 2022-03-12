@@ -50,6 +50,9 @@ public class Double3 {
 		return (int) Math.round(d1 + d2 + d3);
 	}
 
+	/***
+	 * Display some information of the point
+	 */
 	@Override
 	public String toString() {
 		return "(" + d1 + "," + d2 + "," + d3 + ")";

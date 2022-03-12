@@ -103,11 +103,11 @@ class VectorTest {
     @org.junit.jupiter.api.Test
     void normalize() {
         //test normalised vector function- length=1
-        assertTrue("ERROR: the normalized vector is not a unit vector", !isZero(u.length() -1));
+        assertTrue("ERROR: the normalized vector is not a unit vector", isZero(u.length() - 1));
         //test normalised vector function- direction
         assertThrows(IllegalArgumentException.class, () -> v.crossProduct(u),
                 "ERROR: the normalized vector is not parallel to the original one");
         //test normalised vector function- absolute value
-        assertTrue("ERROR: the normalized vector is opposite to the original one", v.dotProduct(u) < 0);
+        assertTrue("ERROR: the normalized vector is opposite to the original one", !(v.dotProduct(u) < 0));
     }
 }

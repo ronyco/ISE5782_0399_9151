@@ -20,6 +20,7 @@ class PlaneTest {
 
     @Test
     void getNormal() {
+        // ============ Equivalence Partitions Tests - Only One ==============
         Plane p = new Plane(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0));
         double sqrt3 = Math.sqrt(1d / 3);
         assertTrue("ERROR:Bad normal to plane", p.getNormal(new Point(0, 0, 1)).equals(new Vector(sqrt3, sqrt3, sqrt3))||

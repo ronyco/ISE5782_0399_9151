@@ -6,7 +6,7 @@ package primitives;
 public class Vector extends Point {
 
     /**
-     * Constructor to initialize Vector with three number values
+     * Constructor to initialize Vector with three number-double values
      *
      * @param x first number value
      * @param y second number value
@@ -55,8 +55,10 @@ public class Vector extends Point {
      * @return result of dot product
      */
     public double dotProduct(Vector v) {
-        Double3 tmp = xyz.product(v.xyz);
-        return tmp.d1 + tmp.d2 + tmp.d3;
+        double x1 = xyz.d1 * v.xyz.d1;
+        double x2 = xyz.d2 * v.xyz.d2;
+        double x3 = xyz.d3 * v.xyz.d3;
+        return x1 + x2 + x3;
     }
 
     /**
