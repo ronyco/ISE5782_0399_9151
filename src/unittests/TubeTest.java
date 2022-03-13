@@ -1,6 +1,5 @@
 package unittests;
 
-import geometries.Triangle;
 import geometries.Tube;
 import org.junit.jupiter.api.Test;
 import primitives.Point;

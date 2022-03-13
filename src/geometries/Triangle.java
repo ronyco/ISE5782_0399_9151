@@ -7,7 +7,7 @@ import primitives.Vector;
  */
 public class Triangle extends Polygon {
     /**
-     * Triangle constructor that inialize a triangle using three point that passed by parameter
+     * Triangle constructor that initialize a triangle using three point that passed by parameter
      * @param p1 First Point value
      * @param p2 Second Point value
      * @param p3 Third Point value
