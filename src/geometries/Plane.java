@@ -2,9 +2,11 @@ package geometries;
 
 import primitives.*;
 
+import java.util.List;
+
 
 /**
- * the class plane represents a plane in the three dimension
+ * Class plane represents a plane in the three dimension
  */
 public class Plane implements Geometry{
     private final Point q0;
@@ -40,10 +42,13 @@ public class Plane implements Geometry{
         normal = v.normalize();
     }
 
-    @Override
+
     /***
-     * Returns normal vector to a specific point one plane
+     * Given a point, return normal to this point
+     * @param p is point
+     * @return normal vector to a specific Point
      */
+    @Override
     public Vector getNormal(Point p) {
         return normal;
     }
@@ -73,5 +78,10 @@ public class Plane implements Geometry{
                 "q0=" + q0 +
                 ", normal=" + normal +
                 '}';
+    }
+
+    @Override
+    public List<Point> findIntersections(Ray ray) {
+        return null;
     }
 }

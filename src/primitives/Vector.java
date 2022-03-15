@@ -1,7 +1,7 @@
 package primitives;
 
 /**
- * this class represents a vector in the three dimension using a point
+ * This class represents a vector in the three dimension using a point
  */
 public class Vector extends Point {
 
@@ -82,6 +82,7 @@ public class Vector extends Point {
         Double3 tmp = xyz.product(this.xyz);
         return tmp.d1 + tmp.d2 + tmp.d3;
     }
+
     /**
      * calculates the length of a vector
      * @return length of vector
@@ -102,6 +103,10 @@ public class Vector extends Point {
         return new Vector(x1,x2,x3);
     }
 
+    /***
+     * Get Function to return XYZ Double3
+     * @return Value of double XYZ
+     */
     @Override
     public Double3 getXyz() {
         return super.getXyz();

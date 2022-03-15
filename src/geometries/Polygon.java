@@ -1,16 +1,14 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Vector;
-
 import java.util.List;
 
-import static primitives.Util.isZero;
+import primitives.*;
+import static primitives.Util.*;
 
 /**
  * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
  * system
- * 
+ *
  * @author Dan
  */
 public class Polygon implements Geometry {
@@ -27,7 +25,7 @@ public class Polygon implements Geometry {
 	/**
 	 * Polygon constructor based on vertices list. The list must be ordered by edge
 	 * path. The polygon must be convex.
-	 * 
+	 *
 	 * @param vertices list of vertices according to their order by edge path
 	 * @throws IllegalArgumentException in any case of illegal combination of
 	 *                                  vertices:
@@ -73,7 +71,7 @@ public class Polygon implements Geometry {
 		// the
 		// polygon is convex ("kamur" in Hebrew).
 		boolean positive = edge1.crossProduct(edge2).dotProduct(n) > 0;
-		for (int i = 1; i < vertices.length; ++i) {
+		for (var i = 1; i < vertices.length; ++i) {
 			// Test that the point is in the same plane as calculated originally
 			if (!isZero(vertices[i].subtract(vertices[0]).dotProduct(n)))
 				throw new IllegalArgumentException("All vertices of a polygon must lay in the same plane");
@@ -88,6 +86,11 @@ public class Polygon implements Geometry {
 
 	@Override
 	public Vector getNormal(Point point) {
-		return plane.getNormal(point);
+		return plane.getNormal();
+	}
+
+	@Override
+	public List<Point> findIntersections(Ray ray) {
+		return null;
 	}
 }

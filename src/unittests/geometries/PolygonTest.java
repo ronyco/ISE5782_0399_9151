@@ -1,22 +1,15 @@
-/**
- *
- */
-package unittests;
+package unittests.geometries;
 
-import static org.junit.jupiter.api.Assertions.*;
+import geometries.Polygon;
+import geometries.Sphere;
 import org.junit.jupiter.api.Test;
-
-import geometries.*;
 import primitives.*;
 
-/**
- * Testing Polygons
- *
- * @author Dan
- *
- */
-public class PolygonTests {
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+class PolygonTest {
 	/**
 	 * Test method for {@link geometries.Polygon#Polygon(primitives.Point...)}.
 	 */
@@ -26,7 +19,11 @@ public class PolygonTests {
 
 		// TC01: Correct concave quadrangular with vertices in correct order
 		try {
-			new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1));
+			new Polygon(
+					new Point(0, 0, 1),
+					new Point(1, 0, 0),
+					new Point(0, 1, 0),
+					new Point(-1, 1, 1));
 		} catch (IllegalArgumentException e) {
 			fail("Failed constructing a correct polygon");
 		}
@@ -43,7 +40,10 @@ public class PolygonTests {
 
 		// TC04: Concave quadrangular
 		assertThrows(IllegalArgumentException.class, //
-				() -> new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0),
+				() -> new Polygon(
+						new Point(0, 0, 1),
+						new Point(1, 0, 0),
+						new Point(0, 1, 0),
 						new Point(0.5, 0.25, 0.5)), //
 				"Constructed a concave polygon");
 
@@ -73,12 +73,17 @@ public class PolygonTests {
 	public void testGetNormal() {
 		// ============ Equivalence Partitions Tests ==============
 		// TC01: There is a simple single test here
-		Polygon pl = new Polygon(
-				new Point(0, 0, 1),
-				new Point(1, 0, 0),
-				new Point(0, 1, 0),
-				new Point(-1, 1, 1));
+		Point p1 = new Point(0,0,1);
+		Point p2 = new Point(1,0,0);
+		Point p3 = new Point(0,1,0);
+		Point p4 = new Point(-1, 1, 1);
+
+		Polygon polygon = new Polygon(p1,p2,p3,p4);
+
 		double sqrt3 = Math.sqrt(1d / 3);
-		assertEquals(new Vector(sqrt3, sqrt3, sqrt3), pl.getNormal(new Point(0, 0, 1)), "Bad normal to triangle");
+		Vector v = new Vector(sqrt3, sqrt3, sqrt3);
+
+		assertEquals(v, polygon.getNormal(new Point(0,0,1)), "Bad normal to polygon");
+
 	}
 }

@@ -3,7 +3,7 @@ package primitives;
 import java.util.Objects;
 
 /**
- * this class represents a point in three dimension space
+ * This class represents a point in three dimension space
  */
 public class Point {
     protected Double3 xyz;
@@ -26,6 +26,11 @@ public class Point {
         this.xyz = xyz;
     }
 
+    /***
+     * Function returns new Vector after subtract point of his vector to point passing by parameter
+     * @param p2 represent a point
+     * @return new Vector after subtract a specific point
+     */
     public Vector Point(Point p2) {
         return new Vector(xyz.subtract(p2.xyz));
     }
@@ -69,10 +74,19 @@ public class Point {
         return Math.sqrt(distanceSquared(p2));
     }
 
+    /**
+     * Get function that return XYZ double3
+     * @return XYZ double3
+     */
     public Double3 getXyz() {
         return xyz;
     }
 
+    /***
+     * Function that check if two points are equals
+     * @param o
+     * @return true if equals or not if not equals
+     */
     @Override
     public boolean equals(Object o)
     {

@@ -8,7 +8,7 @@ import primitives.Vector;
  * Inherit from Tube class
  */
 public class Cylinder extends Tube {
-    double height;
+    protected double height;
 
     /****
      * Cylinder constructor. Build a cylinder using a ray(Direction) and a radius
@@ -24,6 +24,10 @@ public class Cylinder extends Tube {
         return height;
     }
 
+    /***
+     * Display some information about cylinder
+     * @return a string with info
+     */
     @Override
     public String toString() {
         return   super.toString() +
@@ -32,6 +36,11 @@ public class Cylinder extends Tube {
                 '}';
     }
 
+    /***
+     * Return normal to cylinder for now null
+     * @param p
+     * @return for now null0
+     */
     @Override
     public Vector getNormal(Point p) {
         return null;
