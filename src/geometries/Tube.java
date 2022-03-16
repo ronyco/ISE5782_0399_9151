@@ -6,19 +6,21 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 /**
  * Tube class represents three-dimensional Tube in 3D Cartesian coordinate
  */
- public class Tube implements Geometry {
+public class Tube implements Geometry {
     protected final Ray axisRay;
     protected final double radius;
 
     /**
      * Tube constructor that represents an infinite cylinder using a ray and a radius
      */
-    public Tube(Ray ray, double rad){
-        axisRay=ray;
-        radius=rad;
+    public Tube(Ray ray, double rad) {
+        axisRay = ray;
+        radius = rad;
     }
 
     /***
@@ -31,7 +33,7 @@ import java.util.List;
 
     /***
      * Get function that return axisRay of Tube
-        @return axisRay of tube
+     @return axisRay of tube
      */
     public Ray getAxisRay() {
         return axisRay;
@@ -43,9 +45,13 @@ import java.util.List;
      */
     @Override
     public Vector getNormal(Point p) {
-        double t= (axisRay.getDir()).dotProduct(p.subtract(axisRay.getP0()));
-        Point O = axisRay.getP0().add(axisRay.getDir().scale(t));
-        return (p.subtract(O)).normalize();
+        Point p0 = axisRay.getP0();
+        Vector dir = axisRay.getDir();
+
+        double t = dir.dotProduct(p.subtract(p0));
+        Point o = isZero(t) ? p0 : p0.add(dir.scale(t));
+
+        return (p.subtract(o)).normalize();
     }
 
     @Override

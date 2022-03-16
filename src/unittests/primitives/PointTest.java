@@ -2,6 +2,7 @@ package unittests.primitives;
 
 import primitives.*;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -11,6 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PointTest {
 
     Point p1 = new Point(1, 2, 3);
+    Point p2 = new Point(2,3,4);
 
     /**
      * Test method for add
@@ -19,8 +21,7 @@ class PointTest {
     void add() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Point addition calculation error
-        Point p = new Point(1,2,3);
-        assertEquals(p.add(new Vector(-1,-2,-3)),new Point(0,0,0),"ERROR: Point + Vector does not work correctly");
+        assertEquals(new Point(0, 0, 0), p1.add(new Vector(-1, -2, -3)), "ERROR: Point + Vector does not work correctly");
     }
 
     /**
@@ -30,8 +31,11 @@ class PointTest {
     void subtract() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Point subtraction wrong calculation
-        Point p = new Point(1,2,3);
-        assertEquals(new Vector(1,1,1), new Point(2,3,4).subtract(p),"ERROR: Point + Vector does not work correctly");
+        assertEquals(new Vector(1, 1, 1), p2.subtract(p1), "ERROR: Point + Vector does not work correctly");
+        // =============== Boundary Values Tests ==================
+        // TC01: Subtract of same two points
+        assertThrows(IllegalArgumentException.class, () -> p1.subtract(p1),
+                "Error: Zero vector is not allowed");
     }
 
     /**
@@ -41,9 +45,8 @@ class PointTest {
     void distanceSquared() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Point distance squared wrong calculation
-        Point p = new Point(1,2,3);
-        Point p2 = new Point(4,5,6);
-        assertEquals(27, p.distanceSquared(p2), "ERROR: wrong squared distance between points");
+        Point p2 = new Point(4, 5, 6);
+        assertEquals(27.0, p1.distanceSquared(p2), 0.0000001, "ERROR: wrong squared distance between points");
     }
 
     /**
@@ -53,8 +56,8 @@ class PointTest {
     void distance() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Point distance wrong calculation
-        Point p = new Point(1,1,1);
-        Point p2 = new Point(-1,1,1);
+        Point p = new Point(1, 1, 1);
+        Point p2 = new Point(-1, 1, 1);
         assertEquals(2, p.distance(p2), "ERROR: wrong distance between points");
     }
 }

@@ -25,8 +25,8 @@ class TubeTest {
         assertEquals(new Vector(0,-1,0), t.getNormal(new Point(2,1,0)), "Bad normal to Tube");
 
         // =============== Boundary Values Tests-Only one==================
-        //TC01: Point is at begin of ray
-        assertEquals(new Vector(0,-1,0), t.getNormal(new Point(2,1,1)), "Bad normal to Tube");
+        //TC01: Point is against begin of ray
+        assertEquals(new Vector(0,-1,0), t.getNormal(new Point(2,1,2)), "Bad normal to Tube");
     }
 
 }

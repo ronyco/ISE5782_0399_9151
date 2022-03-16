@@ -4,8 +4,8 @@ package primitives;
  * Ray class represents a ray in three dimension space, meaning a point with a one-sided direction
  */
 public class Ray {
-    protected final Point p0;
-    protected final Vector dir;
+    private final Point p0;
+    private final Vector dir;
 
     /**
      * Constructor to initialize Ray with point and normal vector

@@ -8,36 +8,31 @@ import java.util.List;
 /**
  * Class plane represents a plane in the three dimension
  */
-public class Plane implements Geometry{
+public class Plane implements Geometry {
     private final Point q0;
     private final Vector normal;
 
     /**
      * Plane constructor that initialize a plane using three points
+     *
      * @param p1 first point
      * @param p2 second point
      * @param p3 third point
      */
-    public Plane(Point p1,Point p2, Point p3) {
-        if(p1.equals(p2)||p1.equals(p3)||p2.equals(p3))
-            throw new IllegalArgumentException("can't initialise plane with identical points");
-        try{
-            normal = ((p1.subtract(p2)).crossProduct(p3.subtract(p1))).normalize();
-        }
-        catch (Exception e){
-            throw new IllegalArgumentException("can't initialise plane with points on the same line");
-        }
-        q0=p1;
+    public Plane(Point p1, Point p2, Point p3) {
+        normal = ((p1.subtract(p2)).crossProduct(p3.subtract(p1))).normalize();
+        q0 = p1;
 
     }
 
     /**
      * Constructor that initialize a plane using a point and a vector
      * Save vector after that it will be normalized
+     *
      * @param p point
      * @param v vector (Not necessarily normalized)
      */
-    public Plane(Point p,Vector v) {
+    public Plane(Point p, Vector v) {
         q0 = p;
         normal = v.normalize();
     }

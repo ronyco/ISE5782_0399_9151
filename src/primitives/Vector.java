@@ -103,6 +103,7 @@ public class Vector extends Point {
         return new Vector(x1,x2,x3);
     }
 
+
     /***
      * Get Function to return XYZ Double3
      * @return Value of double XYZ
