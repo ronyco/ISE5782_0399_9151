@@ -85,7 +85,8 @@ class VectorTest {
         //TC02: Sharp angle
         assertEquals(32, v1.dotProduct(v4), "Error: dotProduct() wrong value for sharp angle");
         //TC03: Obtuse angle
-
+        assertEquals(
+                -64, v2.dotProduct(v4), "Error: dotProduct() wrong value for Obtuse angle");
         // =============== Boundary Values Tests ==================
         //TC01: Orthogonal vectors
         assertTrue(isZero(v1.dotProduct(v3)), "ERROR: dotProduct() for orthogonal vectors is not zero");

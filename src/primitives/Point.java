@@ -107,4 +107,8 @@ public class Point {
     {
         return Objects.hash(xyz);
     }
+
+    public double getX() {
+        return xyz.d1;
+    }
 }

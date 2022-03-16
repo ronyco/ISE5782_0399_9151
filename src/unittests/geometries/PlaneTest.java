@@ -43,4 +43,8 @@ class PlaneTest {
         assertTrue(plane.getNormal().equals(new Vector(-1,0,0)) ||
                 plane.getNormal().equals(new Vector(-1,0,0).scale(-1)));
     }
+
+    @Test
+    void findIntersections() {
+    }
 }
