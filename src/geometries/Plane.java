@@ -1,8 +1,9 @@
 package geometries;
-
 import primitives.*;
-
 import java.util.List;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 
 /**
@@ -77,6 +78,36 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
+        Point P0 = ray.getP0();
+        Vector v = ray.getDir();
+        Vector n = normal;
+
+        //Denominator
+        double nv = alignZero(n.dotProduct(v));
+        //Ray direction cannot be parallel to plane orientation
+        if(isZero(nv)) { return null; }
+
+        Vector P0_QO = q0.subtract(P0);
+
+
+        if(q0.equals(P0)) {
+            return null;
+        }
+
+        //Numerator
+        double nQMinusP0 = alignZero(n.dotProduct(P0_QO));
+        //T should be superior to zero
+        if(isZero(nQMinusP0)) {
+            return null;
+        }
+        double t = alignZero(nQMinusP0/nv);
+
+        // t should be > 0
+        if(t <= 0)
+        {
+            return null;
+        }
+        //T superior to zero
+        return List.of(ray.getPoint(t));
     }
 }

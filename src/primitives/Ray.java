@@ -1,5 +1,7 @@
 package primitives;
 
+import static primitives.Util.isZero;
+
 /**
  * Ray class represents a ray in three dimension space, meaning a point with a one-sided direction
  */
@@ -31,5 +33,17 @@ public class Ray {
      */
     public Vector getDir() {
         return dir;
+    }
+
+    /***
+     * Get Point at specific distance in the ray direction
+     * @param t distance for reaching new Point
+     * @return new {@link Point}
+     */
+    public Point getPoint(double t) {
+        if(isZero(t)){
+            throw new IllegalArgumentException("T equal 0 cause illegal Vector ZERO");
+        }
+        return p0.add(dir.scale(t));
     }
 }
