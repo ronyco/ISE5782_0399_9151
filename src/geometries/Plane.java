@@ -78,36 +78,36 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
+        //In the formula we have to find P, but first we have to find t
+        //So that P = P0 + t.v | t > 0
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
         Vector n = normal;
 
+        //Ray is on the plane itself
+        if(q0.equals(P0)) {
+            return null;
+        }
+
+        Vector P0_QO = q0.subtract(P0);
+        //Numerator
+        double nQMinusP0 = alignZero(n.dotProduct(P0_QO));
+
+        //T should be superior to zero (Given in formula)
+        if(isZero(nQMinusP0)) {
+            return null;
+        }
         //Denominator
         double nv = alignZero(n.dotProduct(v));
         //Ray direction cannot be parallel to plane orientation
         if(isZero(nv)) { return null; }
 
-        Vector P0_QO = q0.subtract(P0);
-
-
-        if(q0.equals(P0)) {
-            return null;
-        }
-
-        //Numerator
-        double nQMinusP0 = alignZero(n.dotProduct(P0_QO));
-        //T should be superior to zero
-        if(isZero(nQMinusP0)) {
-            return null;
-        }
         double t = alignZero(nQMinusP0/nv);
 
-        // t should be > 0
-        if(t <= 0)
+        if(t > 0)
         {
-            return null;
+            return List.of(ray.getPoint(t));
         }
-        //T superior to zero
-        return List.of(ray.getPoint(t));
+        return null; //If inferior to zero, no intersection
     }
 }

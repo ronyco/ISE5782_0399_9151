@@ -22,17 +22,26 @@ class GeometriesTest {
     }
 
     @Test
-    void findIntersections() {
+    public void findIntersections() {
         Geometries geometries = new Geometries(
-                new Triangle(new Point(1,0,0),new Point(0,1,0),new Point(0,0,1)),
-                new Sphere(new Point(0,0,2),0.5),
-                new Polygon(new Point(1,0,0), new Point(0,1,0),new Point(-1,0,0), new Point(0,-1,0))
+                new Sphere(new Point(0, 0, 2), 0.5),
+                new Polygon(
+                        new Point( 1, 0, 0),
+                        new Point(0,  1, 0),
+                        new Point(-1, 0, 0),
+                        new Point(0, -1, 0)
+                ),
+                new Triangle(
+                        new Point(1, 0, 0),
+                        new Point(0, 1, 0),
+                        new Point(0, 0, 1)
+                )
         );
-
         List<Point> result;
+
         // ============ Equivalence Partitions Tests ==============
         //TC01: A few geometries intersects
-        result = geometries.findIntersections(new Ray(new Point(-1,-1,-1),new Vector(2,2,2)));
+        result=geometries.findIntersections(new Ray(new Point(-1,-1,-1),new Vector(2,2,2)));
         assertEquals(2, result.size(), "A few geometries intersects");
 
         // =============== Boundary Values Tests ==================
@@ -49,6 +58,7 @@ class GeometriesTest {
 
         //TC05: Empty list of geometries
         assertNull(new Geometries().findIntersections(new Ray(new Point(1,2,3), new Vector(2,2,2))), "Empty list of geometries");
+
 
     }
 }

@@ -19,7 +19,7 @@ public class Cylinder extends Tube {
      * @param ray
      * @param rad
      */
-    public Cylinder(Ray ray, double rad, double height ) {
+    public Cylinder(Ray ray, double rad, double height) {
         super(ray, rad);
         this.height = height;
     }

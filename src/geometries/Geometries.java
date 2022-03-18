@@ -28,21 +28,21 @@ public class Geometries implements Intersectable {
         Collections.addAll(_intersectables, intersectables);
     }
 
-
     @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> result = null;
-        //TODO comment here
-        List<Point> geoIntersections = null;
-        for (Intersectable geometry : _intersectables) {
-            geoIntersections = geometry.findIntersections(ray);
-        }
-        if (geoIntersections != null) {
-            if (result == null) {
-                result = new LinkedList<>();
+        for (var item : _intersectables) {
+            List<Point> itemList = item.findIntersections(ray);
+            if(itemList!= null){
+                if(result== null)//for the first time addition
+                {
+                    result= new LinkedList<>();
+                }
+                result.addAll(itemList);
             }
-            result.addAll(geoIntersections);
         }
         return result;
     }
+
 }
+
