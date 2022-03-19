@@ -38,7 +38,7 @@ public class Ray {
     /***
      * Get Point at specific distance in the ray direction
      * @param t distance for reaching new Point
-     * @return new {@link Point}
+     * @return new {@link Point} who represent point { P | P = P0 + t.v }
      */
     public Point getPoint(double t) {
         if(isZero(t)){

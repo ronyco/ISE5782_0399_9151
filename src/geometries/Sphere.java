@@ -74,7 +74,8 @@ public class Sphere implements Geometry {
         double tm = alignZero(v.dotProduct(U));
         double d = alignZero(Math.sqrt(U.lengthSquared() - tm * tm));
 
-        // no intersections : the ray direction is above the sphere
+        // When d superior or equal to radius, there are no intersections
+        //Ray is above the circle
         if (d >= radius) {
             return null;
         }
@@ -83,20 +84,17 @@ public class Sphere implements Geometry {
         double t1 = alignZero(tm - th);
         double t2 = alignZero(tm + th);
 
+        //Using formula we only takes t: when superior to zero
         if (t1 > 0 && t2 > 0) {
-//            Point P1 = P0.add(v.scale(t1));
-//            Point P2 = P0.add(v.scale(t2));
             Point P1 =ray.getPoint(t1);
             Point P2 =ray.getPoint(t2);
             return List.of(P1, P2);
         }
         if (t1 > 0) {
-//            Point P1 = P0.add(v.scale(t1));
             Point P1 =ray.getPoint(t1);
             return List.of(P1);
         }
         if (t2 > 0) {
-//            Point P2 = P0.add(v.scale(t2));
             Point P2 =ray.getPoint(t2);
             return List.of(P2);
         }

@@ -93,6 +93,7 @@ public class Polygon implements Geometry {
 	public List<Point> findIntersections(Ray ray) {
 		List<Point> result = plane.findIntersections(ray);
 
+		//If there is no intersections with plane return null
 		if (result == null) {
 			return result;
 		}
@@ -114,7 +115,7 @@ public class Polygon implements Geometry {
 
 		boolean positive = sign > 0;
 
-		//iterate through all vertices of the polygon
+		//Iteration - for loop, through all vertices of polygon
 		for (int i = vertices.size() - 1; i > 0; --i) {
 			v1 = v2;
 			v2 = vertices.get(i).subtract(P0);

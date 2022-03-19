@@ -2,6 +2,7 @@ package unittests.geometries;
 
 import geometries.Tube;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -27,6 +28,10 @@ class TubeTest {
         // =============== Boundary Values Tests-Only one==================
         //TC01: Point is against begin of ray
         assertEquals(new Vector(0,-1,0), t.getNormal(new Point(2,1,2)), "Bad normal to Tube");
+    }
+    @Test
+    void findIntersections(){
+
     }
 
 }
