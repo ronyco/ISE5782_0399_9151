@@ -13,15 +13,12 @@ import java.util.List;
  * Composite class for all geometries object implementing {@link Intersectable}
  */
 public class Geometries implements Intersectable {
-    private final List<Intersectable> _intersectables;
+    private final List<Intersectable> _intersectables = new LinkedList<Intersectable>();
 
-    public Geometries() {
-        _intersectables = new LinkedList<Intersectable>();
-    }
+    public Geometries() { }
 
     public Geometries(Intersectable... intersectables) {
-        _intersectables = new LinkedList<Intersectable>();
-        Collections.addAll(_intersectables, intersectables);
+        add(intersectables);
     }
 
     public void add(Intersectable... intersectables) {

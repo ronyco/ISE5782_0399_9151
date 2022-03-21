@@ -30,10 +30,10 @@ class PointTest {
     @Test
     void subtract() {
         // ============ Equivalence Partitions Tests ==============
-        // TC01: Point subtraction wrong calculation
+        // EP01: Point subtraction wrong calculation
         assertEquals(new Vector(1, 1, 1), p2.subtract(p1), "ERROR: Point + Vector does not work correctly");
         // =============== Boundary Values Tests ==================
-        // TC01: Subtract of same two points
+        // BV01: Subtract of same two points
         assertThrows(IllegalArgumentException.class, () -> p1.subtract(p1),
                 "Error: Zero vector is not allowed");
     }
@@ -47,6 +47,9 @@ class PointTest {
         // TC01: Point distance squared wrong calculation
         Point p2 = new Point(4, 5, 6);
         assertEquals(27.0, p1.distanceSquared(p2), 0.0000001, "ERROR: wrong squared distance between points");
+        // =============== Boundary Values Tests ==================
+        // BV01: Distance with itself
+        assertEquals(0.0, p1.distanceSquared(p1), 0.0000001, "ERROR: wrong squared distance between the point and itself");
     }
 
     /**

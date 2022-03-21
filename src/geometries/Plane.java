@@ -1,5 +1,7 @@
 package geometries;
+
 import primitives.*;
+
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -82,32 +84,24 @@ public class Plane implements Geometry {
         //So that P = P0 + t.v | t > 0
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
-        Vector n = normal;
 
-        //Ray is on the plane itself
-        if(q0.equals(P0)) {
+        Vector P0_QO;
+        try {
+            P0_QO = q0.subtract(P0);
+        } catch (IllegalArgumentException ignore) {
+            //Ray is on the plane itself
             return null;
         }
 
-        Vector P0_QO = q0.subtract(P0);
-        //Numerator
-        double nQMinusP0 = alignZero(n.dotProduct(P0_QO));
-
-        //T should be superior to zero (Given in formula)
-        if(isZero(nQMinusP0)) {
-            return null;
-        }
         //Denominator
-        double nv = alignZero(n.dotProduct(v));
+        double nv =normal.dotProduct(v);
         //Ray direction cannot be parallel to plane orientation
-        if(isZero(nv)) { return null; }
+        if (isZero(nv))
+            return null;
 
-        double t = alignZero(nQMinusP0/nv);
-
-        if(t > 0)
-        {
-            return List.of(ray.getPoint(t));
-        }
-        return null; //If inferior to zero, no intersection
+        //Numerator
+        double t = alignZero(normal.dotProduct(P0_QO) / nv);
+        return t > 0 ? List.of(ray.getPoint(t)) : null;
+        //If inferior to zero, no intersection
     }
 }

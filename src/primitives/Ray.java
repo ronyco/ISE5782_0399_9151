@@ -41,9 +41,6 @@ public class Ray {
      * @return new {@link Point} who represent point { P | P = P0 + t.v }
      */
     public Point getPoint(double t) {
-        if(isZero(t)){
-            throw new IllegalArgumentException("T equal 0 cause illegal Vector ZERO");
-        }
-        return p0.add(dir.scale(t));
+        return isZero(t) ? p0 : p0.add(dir.scale(t));
     }
 }

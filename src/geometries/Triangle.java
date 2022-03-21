@@ -15,12 +15,13 @@ import static primitives.Util.isZero;
 public class Triangle extends Polygon {
     /**
      * Triangle constructor that initialize a triangle using three point that passed by parameter
+     *
      * @param p1 First Point value
      * @param p2 Second Point value
      * @param p3 Third Point value
      */
     public Triangle(Point p1, Point p2, Point p3) {
-        super(p1,p2,p3);
+        super(p1, p2, p3);
     }
 
     /***
@@ -37,17 +38,17 @@ public class Triangle extends Polygon {
      * @return normal vector of the plane to the specific point passed by parameter
      */
     @Override
-    public Vector getNormal(Point point) {return super.getNormal(point);}
+    public Vector getNormal(Point point) {
+        return super.getNormal(point);
+    }
 
     @Override
     public List<Point> findIntersections(Ray ray) {
 
         List<Point> result = plane.findIntersections(ray);
-
         //If there is no intersections with plane return null
-        if (result == null) {
-            return result;
-        }
+        if (result == null)
+            return null;
 
         Point P0 = ray.getP0();
         Vector v = ray.getDir();
@@ -57,19 +58,12 @@ public class Triangle extends Polygon {
         Vector v3 = vertices.get(2).subtract(P0);
 
         double sign1 = alignZero(v.dotProduct(v1.crossProduct(v2)));
+        if (sign1 == 0) return null;
         double sign2 = alignZero(v.dotProduct(v2.crossProduct(v3)));
+        if (sign1 * sign2 <= 0) return null;
         double sign3 = alignZero(v.dotProduct(v3.crossProduct(v1)));
-
-        if (isZero(sign1) || isZero(sign2) || isZero(sign3)) {
-            return null;
-        }
-
-        boolean positive = sign1 > 0;
-        if (positive != (sign2 > 0) || positive != (sign3 > 0)) {
-            return null;
-        }
+        if (sign1 * sign3 <= 0) return null;
 
         return result;
-
     }
 }

@@ -39,19 +39,10 @@ public class Tube implements Geometry {
         return axisRay;
     }
 
-    /***
-     * Returns a normal vector to specific point passing by parameter
-     * @param p
-     */
     @Override
     public Vector getNormal(Point p) {
-        Point p0 = axisRay.getP0();
-        Vector dir = axisRay.getDir();
-
-        double t = dir.dotProduct(p.subtract(p0));
-        Point o = isZero(t) ? p0 : p0.add(dir.scale(t));
-
-        return (p.subtract(o)).normalize();
+        double t = axisRay.getDir().dotProduct(p.subtract(axisRay.getP0()));
+        return (p.subtract(axisRay.getPoint(t))).normalize();
     }
 
     @Override
