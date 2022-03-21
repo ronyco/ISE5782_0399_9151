@@ -58,6 +58,6 @@ class GeometriesTest {
 
         //TC05: Empty list of geometries
         assertNull(new Geometries().findIntersections(new Ray(new Point(1,2,3), new Vector(2,2,2))), "Empty list of geometries");
-        
+
     }
 }
