@@ -62,7 +62,7 @@ public class Vector extends Point {
     }
 
     /**
-     * cross product two vectors into a new vector where eacj couple of numbers is multiplied
+     * cross product two vectors into a new vector where each couple of numbers is multiplied
      * @param v right handle side operand for cross product
      * @return result of cross product
      */
