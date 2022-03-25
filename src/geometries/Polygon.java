@@ -95,7 +95,7 @@ public class Polygon implements Geometry {
 
 		//If there is no intersections with plane return null
 		if (result == null) {
-			return result;
+			return null;
 		}
 
 		Point P0 = ray.getP0();

@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.Objects;
+
 import static primitives.Util.isZero;
 
 /**
@@ -42,6 +44,19 @@ public class Ray {
      */
     public Point getPoint(double t) {
         return isZero(t) ? p0 : p0.add(dir.scale(t));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ray ray = (Ray) o;
+        return Objects.equals(p0, ray.p0) && Objects.equals(dir, ray.dir);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(p0, dir);
     }
 
     @Override
