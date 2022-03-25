@@ -50,12 +50,12 @@ public class Triangle extends Polygon {
         if (result == null)
             return null;
 
-        Point P0 = ray.getP0();
+        Point p0 = ray.getP0();
         Vector v = ray.getDir();
 
-        Vector v1 = vertices.get(1).subtract(P0);
-        Vector v2 = vertices.get(0).subtract(P0);
-        Vector v3 = vertices.get(2).subtract(P0);
+        Vector v1 = vertices.get(1).subtract(p0);
+        Vector v2 = vertices.get(0).subtract(p0);
+        Vector v3 = vertices.get(2).subtract(p0);
 
         double sign1 = alignZero(v.dotProduct(v1.crossProduct(v2)));
         if (sign1 == 0) return null;

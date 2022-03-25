@@ -20,7 +20,7 @@ class PointTest {
     @Test
     void add() {
         // ============ Equivalence Partitions Tests ==============
-        // TC01: Point addition calculation error
+        // EP01: Point addition calculation error
         assertEquals(new Point(0, 0, 0), p1.add(new Vector(-1, -2, -3)), "ERROR: Point + Vector does not work correctly");
     }
 
@@ -44,7 +44,7 @@ class PointTest {
     @Test
     void distanceSquared() {
         // ============ Equivalence Partitions Tests ==============
-        // TC01: Point distance squared wrong calculation
+        // EP01: Point distance squared wrong calculation
         Point p2 = new Point(4, 5, 6);
         assertEquals(27.0, p1.distanceSquared(p2), 0.0000001, "ERROR: wrong squared distance between points");
         // =============== Boundary Values Tests ==================
@@ -62,5 +62,8 @@ class PointTest {
         Point p = new Point(1, 1, 1);
         Point p2 = new Point(-1, 1, 1);
         assertEquals(2, p.distance(p2), "ERROR: wrong distance between points");
+        // =============== Boundary Values Tests ==================
+        // BV01: Distance with itself
+        assertEquals(0.0, p.distanceSquared(p), 0.0000001, "ERROR: wrong squared distance between the point and itself");
     }
 }

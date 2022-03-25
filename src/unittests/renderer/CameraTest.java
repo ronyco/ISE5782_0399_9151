@@ -1,4 +1,4 @@
-package unittests;
+package unittests.renderer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,11 +17,11 @@ class CameraTest {
 	static final Point ZERO_POINT = new Point(0, 0, 0);
 
 	/**
-	 * Test method for
-	 * {@link elements.Camera#constructRay(int, int, int, int)}.
+	 * Test method for ray from camera
 	 */
 	@Test
-	void testConstructRay() {
+	 void testConstructRay()
+	{
 		Camera camera = new Camera(ZERO_POINT, new Vector(0, 0, -1), new Vector(0, -1, 0)).setVPDistance(10);
 		String badRay = "Bad ray";
 
@@ -55,6 +55,5 @@ class CameraTest {
 		assertEquals(new Ray(ZERO_POINT, new Vector(1, -3, -10)),
 				camera.setVPSize(8, 8).constructRay(4, 4, 1, 0), badRay);
 
-}
-
+	}
 }

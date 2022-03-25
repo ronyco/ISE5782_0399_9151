@@ -16,7 +16,7 @@ public class Sphere implements Geometry {
     private final double radius;
     private final double radius2;
 
-    /**
+     /**
      * Sphere constructor that initialize a sphere using a point that represent center of sphere and a radius
      */
     public Sphere(Point c, double r) {
@@ -41,9 +41,7 @@ public class Sphere implements Geometry {
         return center;
     }
 
-    /***
-     * Display some information about Sphere
-     */
+
     @Override
     public String toString() {
         return "Sphere{" +
@@ -52,11 +50,7 @@ public class Sphere implements Geometry {
                 '}';
     }
 
-    /***
-     * Return normal to the sphere
-     * @param p is point
-     * @return new Vector given by the formula normalize(p-0)
-     */
+
     @Override
     public Vector getNormal(Point p) {
         return p.subtract(center).normalize();
@@ -64,17 +58,17 @@ public class Sphere implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        Point P0 = ray.getP0();
+        Point p0 = ray.getP0();
         Vector v = ray.getDir();
 
-        Vector U;
+        Vector u;
         try {
-            U = center.subtract(P0);
+            u = center.subtract(p0);
         } catch (IllegalArgumentException ignore) {
             return List.of(ray.getPoint(radius));
         }
-        double tm = alignZero(v.dotProduct(U));
-        double d2 = alignZero(U.lengthSquared() - tm * tm);
+        double tm = alignZero(v.dotProduct(u));
+        double d2 = alignZero(u.lengthSquared() - tm * tm);
         double th2 = radius2 - d2;
 
         // When d superior or equal to radius, there are no intersections
@@ -89,5 +83,4 @@ public class Sphere implements Geometry {
         double t1 = alignZero(tm - th);
         return t1 <= 0 ? List.of(ray.getPoint(t2)) : List.of(ray.getPoint(t1),ray.getPoint(t2));
     }
-
 }

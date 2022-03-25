@@ -22,11 +22,11 @@ class TubeTest {
     void getNormal() {
         Tube t = new Tube(new Ray(new Point(2,2,2),new Vector(0,0,1)),1);
         // ============ Equivalence Partitions Tests-Only One==============
-        //TC01: Simple Test
+        //EP01: Simple Test
         assertEquals(new Vector(0,-1,0), t.getNormal(new Point(2,1,0)), "Bad normal to Tube");
 
         // =============== Boundary Values Tests-Only one==================
-        //TC01: Point is against begin of ray
+        //BV01: Point is against begin of ray
         assertEquals(new Vector(0,-1,0), t.getNormal(new Point(2,1,2)), "Bad normal to Tube");
     }
     @Test

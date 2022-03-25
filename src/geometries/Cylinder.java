@@ -43,13 +43,6 @@ public class Cylinder extends Tube {
                 '}';
     }
 
-    /***
-     * Return normal to cylinder for now null
-     * @param p
-     * @return for now null0
-     */
-
-
     @Override
     public Vector getNormal(Point p) {
         Point o = axisRay.getP0();

@@ -2,28 +2,30 @@ package renderer;
 
 import primitives.*;
 
+import static primitives.Util.isZero;
+
 /**
  * Camera class represents a camera viewing objects through a view plane
  */
 public class Camera {
-    private Point point;
-    private Vector to,up,right;
+    private Point p0;
+    private Vector vTo,vUp,vRight;
     private double height, width, distance;
 
     /**
      * constructor for Camera
-     * @param point camera's position
-     * @param to vector to view plane
-     * @param up vector up from camera
+     * @param p0 camera's position
+     * @param vTo vector to view plane
+     * @param vUp vector up from camera
      */
-    public Camera(Point point,  Vector to, Vector up) {
-        if(to.dotProduct(up)!=0)
+    public Camera(Point p0,  Vector vTo, Vector vUp) {
+        if(!isZero(vTo.dotProduct(vUp)))
             throw new IllegalArgumentException("Vectors for camera are not orthogonal");
 
-        this.point = point;
-        this.to=to.normalize();
-        this.up=up.normalize();
-        this.right=this.to.crossProduct(this.up);
+        this.p0 = p0;
+        this.vTo=vTo.normalize();
+        this.vUp=vUp.normalize();
+        this.vRight=this.vTo.crossProduct(this.vUp);
     }
 
     /**
@@ -49,7 +51,27 @@ public class Camera {
     }
 
     public Ray constructRay(int nX, int nY, int j, int i){
-        return null;
+        //Center of image
+        Point pc = p0.add(vTo.scale(distance));
+
+        //Ratio (pixel width and weight)
+        double rY = (double) height / nY;
+        double rX = (double) width / nX;
+
+        Point pij = pc;
+
+        double yI = -(i - (nY -1)/2d)*rY;
+        double xJ = (j - (nX -1)/2d)*rX;
+
+        if(!isZero(xJ))
+        {
+            pij = pij.add(vRight.scale(xJ));
+        }
+        if(!isZero(yI))
+        {
+            pij = pij.add(vUp.scale(yI));
+        }
+        return new Ray(p0, pij.subtract(p0));
     }
 
     /**
@@ -57,7 +79,7 @@ public class Camera {
      * @return up
      */
     public Vector getUp() {
-        return up;
+        return vUp;
     }
 
     /**
@@ -73,7 +95,7 @@ public class Camera {
      * @return to
      */
     public Vector getTo() {
-        return to;
+        return vTo;
     }
 
     /**
@@ -81,7 +103,7 @@ public class Camera {
      * @return Right
      */
     public Vector getRight() {
-        return right;
+        return vRight;
     }
 
     /**
@@ -105,6 +127,6 @@ public class Camera {
      * @return Point
      */
     public Point getPoint() {
-        return point;
+        return p0;
     }
 }

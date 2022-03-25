@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface Intersectable {
     /***
-     *
+     * FindIntersections function returns list of intersections using class Point
      * @param ray {@link Ray} pointing toward the object
      * @return list of intersections {@link Point}
      */

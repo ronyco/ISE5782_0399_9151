@@ -31,7 +31,6 @@ public class Plane implements Geometry {
     /**
      * Constructor that initialize a plane using a point and a vector
      * Save vector after that it will be normalized
-     *
      * @param p point
      * @param v vector (Not necessarily normalized)
      */
@@ -40,12 +39,6 @@ public class Plane implements Geometry {
         normal = v.normalize();
     }
 
-
-    /***
-     * Given a point, return normal to this point
-     * @param p is point
-     * @return normal vector to a specific Point
-     */
     @Override
     public Vector getNormal(Point p) {
         return normal;
@@ -82,12 +75,12 @@ public class Plane implements Geometry {
     public List<Point> findIntersections(Ray ray) {
         //In the formula we have to find P, but first we have to find t
         //So that P = P0 + t.v | t > 0
-        Point P0 = ray.getP0();
+        Point p0 = ray.getP0();
         Vector v = ray.getDir();
 
-        Vector P0_QO;
+        Vector p0Q0;
         try {
-            P0_QO = q0.subtract(P0);
+            p0Q0 = q0.subtract(p0);
         } catch (IllegalArgumentException ignore) {
             //Ray is on the plane itself
             return null;
@@ -100,7 +93,7 @@ public class Plane implements Geometry {
             return null;
 
         //Numerator
-        double t = alignZero(normal.dotProduct(P0_QO) / nv);
+        double t = alignZero(normal.dotProduct(p0Q0) / nv);
         return t > 0 ? List.of(ray.getPoint(t)) : null;
         //If inferior to zero, no intersection
     }

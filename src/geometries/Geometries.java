@@ -13,7 +13,7 @@ import java.util.List;
  * Composite class for all geometries object implementing {@link Intersectable}
  */
 public class Geometries implements Intersectable {
-    private final List<Intersectable> _intersectables = new LinkedList<Intersectable>();
+    private final List<Intersectable> intersections = new LinkedList<Intersectable>();
 
     public Geometries() { }
 
@@ -22,13 +22,13 @@ public class Geometries implements Intersectable {
     }
 
     public void add(Intersectable... intersectables) {
-        Collections.addAll(_intersectables, intersectables);
+        Collections.addAll(intersections, intersectables);
     }
 
     @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> result = null;
-        for (var item : _intersectables) {
+        for (var item : intersections) {
             List<Point> itemList = item.findIntersections(ray);
             if(itemList!= null){
                 if(result== null)//for the first time addition

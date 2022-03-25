@@ -45,39 +45,39 @@ class TriangleTest {
                 new Point(0, -2, 0));
         Ray ray;
         // ============ Equivalence Partitions Tests ==============
-        // TC01: Inside Triangle
+        // EP01: Inside Triangle
         ray = new Ray(new Point(1, 0, -1), new Vector(0, 0, 1));
         assertEquals(List.of(
                         new Point(1, 0, 0)),
                 tr.findIntersections(ray),
                 "Bad intersection");
 
-        // TC02: Against edge of Triangle
+        // EP02: Against edge of Triangle
         ray = new Ray(new Point(3, 0, -1), new Vector(0, 0, 1));
         assertEquals(List.of(new Point(3, 0, 0)), pl.findIntersections(ray),
                 "Error: Wrong intersection with plane");
         assertNull(tr.findIntersections(ray), "Error: Bad intersection");
 
-        // TC03: Against vertex of Triangle
+        // EP03: Against vertex of Triangle
         ray = new Ray(new Point(-1, 0, -1), new Vector(0, 0, 1));
         assertEquals(List.of(new Point(-1, 0, 0)), pl.findIntersections(ray),
                 "Error: Wrong intersection with plane");
         assertNull(tr.findIntersections(ray), "Bad intersection");
 
         // =============== Boundary Values Tests ==================
-        // TC11: In vertex
+        // BV11: In vertex
         ray = new Ray(new Point(0, 1, -1), new Vector(0, 0, 1));
         assertEquals(List.of(new Point(0, 1, 0)), pl.findIntersections(ray),
                 "Error: Wrong intersection with plane");
         assertNull(tr.findIntersections(ray), "Bad intersection");
 
-        // TC12: On edge
+        // BV12: On edge
         ray = new Ray(new Point(2, 0, -1), new Vector(0, 0, 1));
         assertEquals(List.of(new Point(2, 0, 0)), pl.findIntersections(ray),
                 "Error: Wrong intersection with plane");
         assertNull(tr.findIntersections(ray), "Bad intersection");
 
-        // TC13: On edge continuation
+        // BV13: On edge continuation
         ray = new Ray(new Point(0, 3, -1), new Vector(0, 0, 1));
         assertEquals(List.of(new Point(0, 3, 0)), pl.findIntersections(ray),
                 "Error: Wrong intersection with plane");
