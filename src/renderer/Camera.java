@@ -10,7 +10,7 @@ import static primitives.Util.isZero;
 public class Camera {
     private Point p0;
     private Vector vTo,vUp,vRight;
-    private double height, width, distance;
+    private double heightVp, widthVp, distanceToVp;
 
     /**
      * constructor for Camera
@@ -35,8 +35,8 @@ public class Camera {
      * @return camera
      */
     public Camera setVPSize(double width, double height){
-        this.width=width;
-        this.height=height;
+        this.widthVp=width;
+        this.heightVp=height;
         return this;
     }
 
@@ -46,17 +46,25 @@ public class Camera {
      * @return camera
      */
     public Camera setVPDistance(double distance){
-        this.distance=distance;
+        this.distanceToVp=distance;
         return this;
     }
 
+    /**
+     * Function that constructs ray from camera through view plane to geometries
+     * @param nX Resolution of view plane x axis
+     * @param nY Resolution of view plane y axis
+     * @param j number of columns
+     * @param i number of rows
+     * @return Ray
+     */
     public Ray constructRay(int nX, int nY, int j, int i){
         //Center of image
-        Point pc = p0.add(vTo.scale(distance));
+        Point pc = p0.add(vTo.scale(distanceToVp));
 
         //Ratio (pixel width and weight)
-        double rY = (double) height / nY;
-        double rX = (double) width / nX;
+        double rY = (double) heightVp / nY;
+        double rX = (double) widthVp / nX;
 
         Point pij = pc;
 
@@ -87,7 +95,7 @@ public class Camera {
      * @return Height
      */
     public double getHeight() {
-        return height;
+        return heightVp;
     }
 
     /**
@@ -111,7 +119,7 @@ public class Camera {
      * @return Width
      */
     public double getWidth() {
-        return width;
+        return widthVp;
     }
 
     /**
@@ -119,7 +127,7 @@ public class Camera {
      * @return Distance
      */
     public double getDistance() {
-        return distance;
+        return distanceToVp;
     }
 
     /**

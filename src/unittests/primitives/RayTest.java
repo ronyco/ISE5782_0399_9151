@@ -20,10 +20,14 @@ public class RayTest {
         Vector v=new Vector(1,0,0);
         Ray ray = new Ray(p,v);
 
-        // TC01: Check when scaling with 0
-        assertEquals(p,ray.getPoint(0),"wrong point");
-
-        // TC02: Check when scaling with number
+        // ============ Equivalence Partitions Tests ==============
+        // EP01: Check when scaling with number
         assertEquals(new Point(4,1,1),ray.getPoint(3),"wrong point");
+        // EP02: Check when scaling with negative number
+        assertEquals(new Point(-2,1,1),ray.getPoint(-3),"wrong point");
+
+        // =============== Boundary Values Tests ==================
+        // BV01: Check when scaling with 0
+        assertEquals(p,ray.getPoint(0),"wrong point");
     }
 }
