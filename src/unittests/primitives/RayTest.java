@@ -11,6 +11,9 @@ import static primitives.Util.isZero;
  */
 public class RayTest {
     @Test
+    /**
+     * test getPoint method
+     */
     void testGetPoint()
     {
         Point p=new Point(1,1,1);
