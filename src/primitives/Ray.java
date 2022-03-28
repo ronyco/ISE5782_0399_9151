@@ -1,5 +1,6 @@
 package primitives;
 
+import java.util.List;
 import java.util.Objects;
 
 import static primitives.Util.isZero;
@@ -44,6 +45,21 @@ public class Ray {
      */
     public Point getPoint(double t) {
         return isZero(t) ? p0 : p0.add(dir.scale(t));
+    }
+
+    /**
+     * find the closest point to beginning of ray
+     * @param listOfPoints list of point on ray
+     * @return closest point
+     */
+    public Point findClosestPoint(List<Point> listOfPoints){
+        if(listOfPoints.size() == 0)
+            return  null;
+        Point result = listOfPoints.get(0);
+        for(int i = 1; i < listOfPoints.size(); i++)
+           if(p0.distance(listOfPoints.get(i)) < p0.distance(result))
+               result = listOfPoints.get(i);
+        return result;
     }
 
     @Override
