@@ -2,6 +2,8 @@ package renderer;
 
 import primitives.*;
 
+import java.util.MissingResourceException;
+
 import static primitives.Util.isZero;
 
 /**
@@ -11,6 +13,8 @@ public class Camera {
     private Point p0;
     private Vector vTo,vUp,vRight;
     private double heightVp, widthVp, distanceToVp;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracerBase;
 
     /**
      * constructor for Camera
@@ -136,5 +140,32 @@ public class Camera {
      */
     public Point getPoint() {
         return p0;
+    }
+
+    /**
+     * set Image Writer
+     * @param imageWriter
+     * @return Camera
+     */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * set Ray tracer
+     * @param rayTracerBase
+     * @return Camera
+     */
+    public Camera setRayTracer(RayTracerBase rayTracerBase) {
+        this.rayTracerBase = rayTracerBase;
+        return this;
+    }
+
+    public void renderImage(){
+        if(this.p0==null || this.vRight==null || this.vTo==null || this.vUp==null || this.imageWriter==null ||
+                this.rayTracerBase==null || this.widthVp==0 || this.heightVp==0)
+            throw new MissingResourceException("cannot have an empty object","Camera","render image");
+        throw  new UnsupportedOperationException();
     }
 }

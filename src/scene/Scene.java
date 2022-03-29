@@ -15,20 +15,26 @@ public class Scene {
     public Scene(String name) {
         this.name = name;
     }
+
 //??????????????????????????????
-    public String getName() {
-        return name;
+
+    public Scene setName(String name) {
+        this.name = name;
+        return this;
     }
 
-    public Color getBackground() {
-        return background;
+    public Scene setBackground(Color background) {
+        this.background = background;
+        return this;
     }
 
-    public AmbientLight getAmbientLight() {
-        return ambientLight;
+    public Scene setAmbientLight(AmbientLight ambientLight) {
+        this.ambientLight = ambientLight;
+        return this;
     }
 
-    public Geometries getGeometries() {
-        return geometries;
+    public Scene setGeometries(Geometries geometries) {
+        this.geometries = geometries;
+        return this;
     }
 }
