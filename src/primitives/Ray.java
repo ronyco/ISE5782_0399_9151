@@ -53,13 +53,23 @@ public class Ray {
      * @return closest point
      */
     public Point findClosestPoint(List<Point> listOfPoints){
-        if(listOfPoints.size() == 0)
-            return  null;
-        Point result = listOfPoints.get(0);
-        for(int i = 1; i < listOfPoints.size(); i++)
-           if(p0.distance(listOfPoints.get(i)) < p0.distance(result))
-               result = listOfPoints.get(i);
-        return result;
+        Point closestPoint = null;
+        double minDistance = Double.MAX_VALUE;
+        double d;
+        if(listOfPoints == null)
+            return null;
+
+        for(var pt: listOfPoints)
+        {
+            d = p0.distance(pt);
+            if(d < minDistance)
+            {
+                minDistance = d;
+                closestPoint = pt;
+            }
+        }
+
+        return closestPoint;
     }
 
     @Override

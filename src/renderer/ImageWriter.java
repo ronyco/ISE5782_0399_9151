@@ -14,7 +14,7 @@ import javax.imageio.*;
  * producing a non-optimized jpeg image from this matrix. The class although is
  * responsible of holding image related parameters of View Plane - pixel matrix
  * size and resolution
- * 
+ *
  * @author Dan
  */
 public class ImageWriter {
@@ -25,7 +25,7 @@ public class ImageWriter {
 
 	private BufferedImage image;
 	private String imageName;
-	
+
 	private Logger logger = Logger.getLogger("ImageWriter");
 
 	// ***************** Constructors ********************** //
@@ -46,7 +46,7 @@ public class ImageWriter {
 	// ***************** Getters/Setters ********************** //
 	/**
 	 * View Plane Y axis resolution
-	 * 
+	 *
 	 * @return the amount of vertical pixels
 	 */
 	public int getNy() {
@@ -55,7 +55,7 @@ public class ImageWriter {
 
 	/**
 	 * View Plane X axis resolution
-	 * 
+	 *
 	 * @return the amount of horizontal pixels
 	 */
 	public int getNx() {
@@ -81,7 +81,7 @@ public class ImageWriter {
 	/**
 	 * The function writePixel writes a color of a specific pixel into pixel color
 	 * matrix
-	 * 
+	 *
 	 * @param xIndex X axis index of the pixel
 	 * @param yIndex Y axis index of the pixel
 	 * @param color  final color of the pixel
