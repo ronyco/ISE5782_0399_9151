@@ -2,6 +2,8 @@ package renderer;
 
 import primitives.*;
 
+import java.util.MissingResourceException;
+
 import static primitives.Util.isZero;
 
 /**
@@ -10,7 +12,9 @@ import static primitives.Util.isZero;
 public class Camera {
     private Point p0;
     private Vector vTo,vUp,vRight;
-    private double height, width, distance;
+    private double heightVp, widthVp, distanceToVp;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracerBase;
 
     /**
      * constructor for Camera
@@ -35,8 +39,8 @@ public class Camera {
      * @return camera
      */
     public Camera setVPSize(double width, double height){
-        this.width=width;
-        this.height=height;
+        this.widthVp=width;
+        this.heightVp=height;
         return this;
     }
 
@@ -46,17 +50,25 @@ public class Camera {
      * @return camera
      */
     public Camera setVPDistance(double distance){
-        this.distance=distance;
+        this.distanceToVp=distance;
         return this;
     }
 
+    /**
+     * Function that constructs ray from camera through view plane to geometries
+     * @param nX Resolution of view plane x axis
+     * @param nY Resolution of view plane y axis
+     * @param j number of columns
+     * @param i number of rows
+     * @return Ray
+     */
     public Ray constructRay(int nX, int nY, int j, int i){
         //Center of image
-        Point pc = p0.add(vTo.scale(distance));
+        Point pc = p0.add(vTo.scale(distanceToVp));
 
         //Ratio (pixel width and weight)
-        double rY = (double) height / nY;
-        double rX = (double) width / nX;
+        double rY = (double) heightVp / nY;
+        double rX = (double) widthVp / nX;
 
         Point pij = pc;
 
@@ -87,7 +99,7 @@ public class Camera {
      * @return Height
      */
     public double getHeight() {
-        return height;
+        return heightVp;
     }
 
     /**
@@ -111,7 +123,7 @@ public class Camera {
      * @return Width
      */
     public double getWidth() {
-        return width;
+        return widthVp;
     }
 
     /**
@@ -119,7 +131,7 @@ public class Camera {
      * @return Distance
      */
     public double getDistance() {
-        return distance;
+        return distanceToVp;
     }
 
     /**
@@ -128,5 +140,32 @@ public class Camera {
      */
     public Point getPoint() {
         return p0;
+    }
+
+    /**
+     * set Image Writer
+     * @param imageWriter
+     * @return Camera
+     */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * set Ray tracer
+     * @param rayTracerBase
+     * @return Camera
+     */
+    public Camera setRayTracer(RayTracerBase rayTracerBase) {
+        this.rayTracerBase = rayTracerBase;
+        return this;
+    }
+
+    public void renderImage(){
+        if(this.p0==null || this.vRight==null || this.vTo==null || this.vUp==null || this.imageWriter==null ||
+                this.rayTracerBase==null || this.widthVp==0 || this.heightVp==0)
+            throw new MissingResourceException("cannot have an empty object","Camera","render image");
+        throw  new UnsupportedOperationException();
     }
 }

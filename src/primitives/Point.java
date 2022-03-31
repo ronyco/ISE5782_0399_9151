@@ -6,6 +6,7 @@ import java.util.Objects;
  * This class represents a point in three dimension space
  */
 public class Point {
+    public static final Point ZERO = new Point(Double3.ZERO);
     protected final Double3 xyz;
     /**
      * Constructor to initialize Point with three number values
