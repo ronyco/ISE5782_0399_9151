@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
 
 /**
- * PointTest class in order to test function of point
+ * testing Ray class
  */
 public class RayTest {
 

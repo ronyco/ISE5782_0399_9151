@@ -4,8 +4,14 @@ import org.junit.jupiter.api.Test;
 import primitives.Color;
 import renderer.ImageWriter;
 
+/**
+ * testing ImageWriter class
+ */
 public class ImageWriterTest {
 
+    /**
+     * Test method for ImageWriter
+     */
     @Test
     public void testImageWriter() {
         int nX = 800;

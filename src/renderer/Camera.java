@@ -183,8 +183,7 @@ public class Camera {
             for (int i = 0; i < nY; i++) {
                 for (int j = 0; j < nX; j++) {
                     Ray ray = constructRay(nX, nY, j, i);
-                    Color pixelColor = rayTracerBase.traceRay(ray);
-                    imageWriter.writePixel(j, i, pixelColor);
+                    imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
                 }
             }
         }

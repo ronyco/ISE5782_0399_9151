@@ -19,8 +19,7 @@ public class RayTracerBasic extends RayTracerBase{
     public Color traceRay(Ray ray) {
         List<Point> intersections = scene.geometries.findIntersections(ray);
         if (intersections != null) {
-            Point closestPoint = ray.findClosestPoint(intersections);
-            return calcColor(closestPoint);
+            return calcColor(ray.findClosestPoint(intersections));
         }
         //ray did not intersect any geometrical object
         return scene.background;
