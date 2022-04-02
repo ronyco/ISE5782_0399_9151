@@ -1,6 +1,8 @@
 package renderer;
 
 import primitives.*;
+import primitives.Color;
+import primitives.Point;
 
 import java.util.MissingResourceException;
 
@@ -10,8 +12,8 @@ import static primitives.Util.isZero;
  * Camera class represents a camera viewing objects through a view plane
  */
 public class Camera {
-    private Point p0;
-    private Vector vTo,vUp,vRight;
+    private final Point p0;
+    private final Vector vTo,vUp,vRight;
     private double heightVp, widthVp, distanceToVp;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracerBase;
@@ -56,8 +58,8 @@ public class Camera {
 
     /**
      * Function that constructs ray from camera through view plane to geometries
-     * @param nX Resolution of view plane x axis
-     * @param nY Resolution of view plane y axis
+     * @param nX Resolution of view plane x-axis
+     * @param nY Resolution of view plane y-axis
      * @param j number of columns
      * @param i number of rows
      * @return Ray
@@ -162,10 +164,57 @@ public class Camera {
         return this;
     }
 
+    /**
+     * Render image function that throws exception if not all arguments are passed
+     */
     public void renderImage(){
-        if(this.p0==null || this.vRight==null || this.vTo==null || this.vUp==null || this.imageWriter==null ||
-                this.rayTracerBase==null || this.widthVp==0 || this.heightVp==0)
-            throw new MissingResourceException("cannot have an empty object","Camera","render image");
-        throw  new UnsupportedOperationException();
+        try
+        {
+            if(imageWriter == null)
+                throw new MissingResourceException("Missing Resource", ImageWriter.class.getName(),"");
+            if(rayTracerBase == null)
+                throw new MissingResourceException("Missing Resource",RayTracerBase.class.getName(),"");
+            if(this.p0 == null || this.vTo == null || this.vRight == null || this.vUp == null || this.widthVp == 0 || this.heightVp == 0)
+                throw new MissingResourceException("Missing Resource", Camera.class.getName(), "");
+
+            //rendering the image
+            int nX = imageWriter.getNx();
+            int nY = imageWriter.getNy();
+            for (int i = 0; i < nY; i++) {
+                for (int j = 0; j < nX; j++) {
+                    Ray ray = constructRay(nX, nY, j, i);
+                    Color pixelColor = rayTracerBase.traceRay(ray);
+                    imageWriter.writePixel(j, i, pixelColor);
+                }
+            }
+        }
+        catch (MissingResourceException e){
+            throw new UnsupportedOperationException("Render didn't receive " + e.getClassName());
+        }
+    }
+
+    /**
+     * Print Grid of the image
+     * @param interval of the grid's line
+     * @param intervalColor color of grid's line
+     */
+    public void printGrid(int interval, Color intervalColor) {
+        if(imageWriter == null)
+            throw new MissingResourceException("Missing Resource", imageWriter.getClass().getName(), "");
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nY; i++) {
+            for (int j = 0; j < nX; j++) {
+                if (i % interval == 0 || j % interval == 0) {
+                    imageWriter.writePixel(j, i, intervalColor);
+                }
+            }
+        }
+    }
+
+    public void writeToImage() {
+        if(imageWriter == null)
+            throw new MissingResourceException("Missing Resource", imageWriter.getClass().getName(), "");
+        imageWriter.writeToImage();
     }
 }

@@ -7,19 +7,23 @@ import renderer.ImageWriter;
 public class ImageWriterTest {
 
     @Test
-    public void testImageWriter(){
-       ImageWriter imageWriter= new ImageWriter("myFirstImage", 800,500);
-       for(int j = 0; j < 500; j++){
-           for(int i = 0; i<800; i++){
-               if(j%50==0)
-                   imageWriter.writePixel(i,j,new Color(2,100,255));
-               else
-                   if(i%50==0)
-                        imageWriter.writePixel(i,j,new Color(2,100,255));
-                   else
-                        imageWriter.writePixel(i,j,new Color(1,50,60));
-           }
-       }
-       imageWriter.writeToImage();
+    public void testImageWriter() {
+        int nX = 800;
+        int nY = 500;
+
+        Color yellowColor = new Color(java.awt.Color.YELLOW);
+        Color redColor = new Color(java.awt.Color.RED);
+        ImageWriter imageWriter = new ImageWriter("testYellow", nX, nY);
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
+                //800/50 = 16; 500/50=10
+                if (i % 50 == 0 || j % 50 == 0) {
+                    imageWriter.writePixel(i, j, redColor);
+                } else {
+                    imageWriter.writePixel(i, j, yellowColor);
+                }
+            }
+        }
+        imageWriter.writeToImage();
     }
 }

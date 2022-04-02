@@ -12,6 +12,7 @@ import static primitives.Util.isZero;
  * PointTest class in order to test function of point
  */
 public class RayTest {
+
     @Test
     /**
      * test getPoint method
