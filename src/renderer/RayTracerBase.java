@@ -19,8 +19,8 @@ public abstract class RayTracerBase {
 
     /**
      * Abstract function which trace a ray
-     * @param ray 
-     * @return Color
+     * @param ray in scene
+     * @return Color instance
      */
     public abstract Color traceRay(Ray ray);
 }

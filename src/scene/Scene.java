@@ -8,11 +8,22 @@ import primitives.Color;
  * Scene class: Holder for all the objects of the 3d world to render
  */
 public class Scene {
-
+    /**
+     * Name of the scene
+     */
     public String name;
-    public Color background= Color.BLACK;
+    /**
+     * Background color of scene
+     */
+    public Color background = Color.BLACK;
+    /**
+     * Ambient light of scene
+     */
     public AmbientLight ambientLight = new AmbientLight();
-    public Geometries geometries = new Geometries(); //Composite for all geometric object
+    /**
+     *Composite for all geometric object
+     */
+    public Geometries geometries = new Geometries();
 
 
     /**

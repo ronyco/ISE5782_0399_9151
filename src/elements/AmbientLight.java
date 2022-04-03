@@ -19,7 +19,7 @@ public class AmbientLight {
     }
 
     /**
-     * Default Constructor
+     * Default Constructor which return black color
      */
     public AmbientLight() {
         intensity = Color.BLACK;
