@@ -11,7 +11,7 @@ import static primitives.Util.isZero;
 /**
  * Class plane represents a plane in the three dimension
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     private final Point q0;
     private final Vector normal;
 
@@ -72,7 +72,7 @@ public class Plane implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         //In the formula we have to find P, but first we have to find t
         //So that P = P0 + t.v | t > 0
         Point p0 = ray.getP0();
@@ -94,7 +94,7 @@ public class Plane implements Geometry {
 
         //Numerator
         double t = alignZero(normal.dotProduct(p0Q0) / nv);
-        return t > 0 ? List.of(ray.getPoint(t)) : null;
+        return t > 0 ? List.of(new GeoPoint(this, ray.getPoint(t))) : null;
         //If inferior to zero, no intersection
     }
 }

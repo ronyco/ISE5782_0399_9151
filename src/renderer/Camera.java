@@ -1,7 +1,6 @@
 package renderer;
 
 import primitives.*;
-import primitives.Color;
 import primitives.Point;
 
 import java.util.MissingResourceException;

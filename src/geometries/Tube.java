@@ -11,7 +11,7 @@ import static primitives.Util.isZero;
 /**
  * Tube class represents three-dimensional Tube in 3D Cartesian coordinate
  */
-public class Tube implements Geometry {
+public class Tube extends Geometry {
     protected final Ray axisRay;
     protected final double radius;
 
@@ -46,7 +46,7 @@ public class Tube implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         return null;
     }
 }

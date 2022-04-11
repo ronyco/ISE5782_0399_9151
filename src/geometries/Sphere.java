@@ -11,7 +11,7 @@ import static primitives.Util.alignZero;
 /**
  * Sphere class represents three-dimensional Sphere in 3D Cartesian coordinate
  */
-public class Sphere implements Geometry {
+public class Sphere extends Geometry {
     private final Point center;
     private final double radius;
     private final double radius2;
@@ -56,8 +56,9 @@ public class Sphere implements Geometry {
         return p.subtract(center).normalize();
     }
 
+
     @Override
-    public List<Point> findIntersections(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
 
@@ -65,7 +66,7 @@ public class Sphere implements Geometry {
         try {
             u = center.subtract(p0);
         } catch (IllegalArgumentException ignore) {
-            return List.of(ray.getPoint(radius));
+            return List.of(new GeoPoint(this, ray.getPoint(radius)));
         }
         double tm = alignZero(v.dotProduct(u));
         double d2 = alignZero(u.lengthSquared() - tm * tm);
@@ -81,6 +82,8 @@ public class Sphere implements Geometry {
         if (t2 <= 0) return null; // both will be behind the ray
 
         double t1 = alignZero(tm - th);
-        return t1 <= 0 ? List.of(ray.getPoint(t2)) : List.of(ray.getPoint(t1),ray.getPoint(t2));
+        return t1 <= 0 ? List.of(new GeoPoint(this,ray.getPoint(t2))) :
+                List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+
     }
 }

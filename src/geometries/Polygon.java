@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import primitives.*;
@@ -11,7 +12,7 @@ import static primitives.Util.*;
  *
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
 	/**
 	 * List of polygon's vertices
 	 */
@@ -89,9 +90,11 @@ public class Polygon implements Geometry {
 		return plane.getNormal();
 	}
 
+
 	@Override
-	public List<Point> findIntersections(Ray ray) {
-		List<Point> result = plane.findIntersections(ray);
+	protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+
+		List<GeoPoint> result = plane.findGeoIntersectionsHelper(ray);
 
 		//If there is no intersections with plane return null
 		if (result == null) {
@@ -130,7 +133,12 @@ public class Polygon implements Geometry {
 			}
 		}
 
-		return result;
+		List<GeoPoint> newResult = new LinkedList<> ();
+		for (var item: result) {
+			newResult.add(new GeoPoint(this, item.point));
+		}
+		return newResult;
+
 	}
 
 }

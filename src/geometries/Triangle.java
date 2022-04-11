@@ -4,6 +4,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -42,10 +43,12 @@ public class Triangle extends Polygon {
         return super.getNormal(point);
     }
 
-    @Override
-    public List<Point> findIntersections(Ray ray) {
 
-        List<Point> result = plane.findIntersections(ray);
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+
+        List<GeoPoint> result = plane.findGeoIntersectionsHelper(ray);
+
         //If there is no intersections with plane return null
         if (result == null)
             return null;
@@ -64,6 +67,11 @@ public class Triangle extends Polygon {
         double sign3 = alignZero(v.dotProduct(v3.crossProduct(v1)));
         if (sign1 * sign3 <= 0) return null;
 
-        return result;
+        List<GeoPoint> newResult = new LinkedList<>();
+        for (var item: result) {
+            newResult.add(new GeoPoint(this, item.point));
+        }
+        return newResult;
     }
+
 }
