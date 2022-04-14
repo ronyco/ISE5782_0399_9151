@@ -1,8 +1,10 @@
 package scene;
 
-import lighting.AmbientLight;
+import lighting.*;
 import geometries.Geometries;
-import primitives.Color;
+import primitives.*;
+
+import java.util.*;
 
 /**
  * Scene class: Holder for all the objects of the 3d world to render
@@ -24,7 +26,10 @@ public class Scene {
      *Composite for all geometric object
      */
     public Geometries geometries = new Geometries();
-
+    /**
+     * light sources in scene
+     */
+    public List<LightSource> lights = new LinkedList<>();
 
     /**
      * Constructor with mandatory name parameter
@@ -72,6 +77,16 @@ public class Scene {
      */
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
+        return this;
+    }
+
+    /**
+     * Setter of lights in scene
+     * @param lights in scene
+     * @return Scene object
+     */
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
         return this;
     }
 }

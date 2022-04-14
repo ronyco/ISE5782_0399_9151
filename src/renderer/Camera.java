@@ -174,7 +174,7 @@ public class Camera {
     /**
      * Render image function that throws exception if not all arguments are passed
      */
-    public void renderImage() {
+    public Camera renderImage() {
         if (imageWriter == null)
             throw new MissingResourceException("Missing Resource", "Camera", ImageWriter.class.getName());
         if (rayTracerBase == null)
@@ -191,6 +191,7 @@ public class Camera {
                 imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
             }
         }
+        return this;
     }
 
     /**

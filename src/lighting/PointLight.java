@@ -23,7 +23,7 @@ public class PointLight extends Light implements LightSource{
      * @param intensity to initiate color
      * @param point to initiate position
       */
-    protected PointLight(Color intensity, Point point) {
+    public PointLight(Color intensity, Point point) {
         super(intensity);
         this.position = point;
     }

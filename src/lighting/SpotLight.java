@@ -17,7 +17,7 @@ public class SpotLight extends PointLight{
      * @param point to initiate position
      * @param vector to initiate
      */
-    protected SpotLight(Color intensity, Point point, Vector vector) {
+    public SpotLight(Color intensity, Point point, Vector vector) {
         super(intensity, point);
         this.direction = vector;
     }
