@@ -12,7 +12,13 @@ public abstract class Intersectable {
      * class GeoPoint to help with findIntersections
      */
     public static class GeoPoint {
+        /***
+         * Geometry field in helper class
+         */
         public Geometry geometry;
+        /**
+         * Point filed in helper class
+         */
         public Point point;
 
         /**
@@ -53,6 +59,11 @@ public abstract class Intersectable {
                 : geoList.stream().map(gp -> gp.point).toList();
     }
 
+    /**
+     * FindGeoIntersections function finds intersections with a specific geometry
+     * @param ray from camera passing in parameter
+     * @return List of intersections with geometry
+     */
     public List<GeoPoint> findGeoIntersections(Ray ray){
         return findGeoIntersectionsHelper(ray);
     }

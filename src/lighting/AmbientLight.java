@@ -8,7 +8,7 @@ import primitives.*;
 public class AmbientLight extends Light {
 
     /**
-     * Constructor with 2 parameters
+     * Constructor with 2 parameters using parent constructor
      * @param iA Basic light intensity
      * @param kA Factor of intensity
      */
@@ -17,7 +17,7 @@ public class AmbientLight extends Light {
     }
 
     /**
-     * Default Constructor which return black color
+     * Default Constructor which pass black color to parent constructor
      */
     public AmbientLight() {
         super(Color.BLACK);

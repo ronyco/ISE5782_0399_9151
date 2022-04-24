@@ -9,7 +9,7 @@ public class Material {
     /**
      * shininess of Material
      */
-    public int nShininess;
+    public int nShininess = 0;
     /**
      * Setter of kD of Material with Double3
      * @param kD of Material

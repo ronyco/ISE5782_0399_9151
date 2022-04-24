@@ -45,9 +45,19 @@ public abstract class Geometry extends Intersectable{
      */
     public abstract Vector getNormal(Point p);
 
+    /**
+     * Getter for emission color
+     * @return Color of emission
+     */
     public Color getEmission() {
         return emission;
     }
+
+    /**
+     * Setter for emission
+     * @param emission how represents a color
+     * @return a Geometry element
+     */
     public Geometry setEmission(Color emission) {
         this.emission = emission;
         return this;

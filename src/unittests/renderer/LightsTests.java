@@ -136,6 +136,8 @@ public class LightsTests {
 	/**
 	 * Produce a picture of a sphere lighted by a narrow spot light
 	 */
+
+    /*
 	@Test
 	public void sphereSpotSharp() {
 		scene1.geometries.add(sphere);
@@ -147,11 +149,12 @@ public class LightsTests {
 				.setRayTracer(new RayTracerBasic(scene1)) //
 				.renderImage() //
 				.writeToImage(); //
-	}
+	}*/
 
 	/**
 	 * Produce a picture of a two triangles lighted by a narrow spot light
 	 */
+    /**
 	@Test
 	public void trianglesSpotSharp() {
 		scene2.geometries.add(triangle1, triangle2);
@@ -163,5 +166,5 @@ public class LightsTests {
 				.renderImage() //
 				.writeToImage(); //
 	}
-
+**/
 }

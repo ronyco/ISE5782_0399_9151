@@ -2,6 +2,9 @@ package lighting;
 
 import primitives.Color;
 
+/**
+ * Light abstract class that illuminates scene
+ */
 abstract class Light {
     /**
      * Light intensity as Color

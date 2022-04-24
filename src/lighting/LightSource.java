@@ -3,7 +3,7 @@ package lighting;
 import primitives.*;
 
 /**
- * interface for light sources
+ * interface for lights source that illuminates in the scene
  */
 public interface LightSource {
     /**
@@ -14,9 +14,9 @@ public interface LightSource {
     public Color getIntensity(Point p);
 
     /**
-     *
-     * @param p
-     * @return
+     * Get vector of light thanks to point
+     * @param p which represent a point
+     * @return a vector
      */
     public Vector getL(Point p);
 }
