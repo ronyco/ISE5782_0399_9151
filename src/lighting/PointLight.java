@@ -13,9 +13,9 @@ public class PointLight extends Light implements LightSource{
      */
     private Point position;
 
-    private double kC = 1;
-    private double  kL = 0;
-    private double kQ = 0;
+    private double kC = 1.0;
+    private double  kL = 0.0;
+    private double kQ = 0.0;
 
     /**
      * constructor for PointLight
@@ -44,7 +44,7 @@ public class PointLight extends Light implements LightSource{
      * @return PointLight object
      */
     public PointLight setkL(double kL) {
-        this.kC = kC;
+        this.kL = kL;
         return  this;
     }
     /**
@@ -53,7 +53,7 @@ public class PointLight extends Light implements LightSource{
      * @return PointLight object
      */
     public PointLight setkQ(double kQ) {
-        this.kC = kC;
+        this.kQ = kQ;
         return  this;
     }
 
@@ -74,6 +74,6 @@ public class PointLight extends Light implements LightSource{
 
     @Override
     public Vector getL(Point p) {
-        return position.subtract(p).normalize();
+        return p.subtract(position).normalize();
     }
 }
