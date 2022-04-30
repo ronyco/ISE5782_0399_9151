@@ -88,7 +88,30 @@ public class LightsTests {
 	}
 
 	/**
-	 * Produce a picture of a two triangles lighted by a directional light
+	 * Produce a picture with multiple lights source on a sphere
+	 */
+	@Test
+	public void sphereMultipleLights() {
+		scene1.geometries.add(sphere);
+		//direction light (At the bottom)
+		scene1.lights.add(new DirectionalLight(new Color(600, 350, 0), new Vector(30, 30, -1)));
+		//point light ( Right of sphere)
+		scene1.lights.add(new PointLight(new Color(500, 0, 0), new Point(900, 100, -500))
+				.setkL(0.00001).setkQ(0.000001));
+		//Spotlight (Left of sphere)
+		scene1.lights.add(new SpotLight(new Color(600, 0, 0),new Point(-200, 100, 50), new Vector(1, 1, -2)) //
+				.setkL(0.00000005).setkQ(0.000000005));
+
+		ImageWriter imageWriter = new ImageWriter("LightMultipleSourceSphere", 500, 500);
+		camera1.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene1)) //
+				.renderImage() //
+				.writeToImage(); //
+	}
+
+
+	/**
+	 * Produce a picture of two triangles lighted by a directional light
 	 */
 	@Test
 	public void trianglesDirectional() {
@@ -103,7 +126,7 @@ public class LightsTests {
 	}
 
 	/**
-	 * Produce a picture of a two triangles lighted by a point light
+	 * Produce a picture of two triangles lighted by a point light
 	 */
 	@Test
 	public void trianglesPoint() {
@@ -118,7 +141,7 @@ public class LightsTests {
 	}
 
 	/**
-	 * Produce a picture of a two triangles lighted by a spot light
+	 * Produce a picture of two triangles lighted by a spot light
 	 */
 	@Test
 	public void trianglesSpot() {
@@ -131,28 +154,32 @@ public class LightsTests {
 				.renderImage() //
 				.writeToImage(); //
 	}
+
 	/**
-	 * Produce a picture of a sphere lighted by a directional light, point light and spot light
+	 * Produce a picture of two triangles lighted by multiple light source
 	 */
 	@Test
-	public void sphereDirectionalPointSpot() {// TODO need to change light coordinates
-		scene1.geometries.add(sphere);
-		scene1.lights.add(new DirectionalLight(spCL, new Vector(1, 1, -0.5)));
-		scene1.lights.add(new PointLight(spCL, spPL).setkL(0.001).setkQ(0.0002));
-		scene1.lights.add(new SpotLight(spCL, spPL, new Vector(-1.5, 0.1, 100.75)).setkL(0.001).setkQ(0.0001));
+	public void TrianglesMultiLight() {
+		scene2.geometries.add(triangle1, triangle2);
+		//direction light (Bottom side of triangle)
+		scene2.lights.add(new DirectionalLight(new Color(245, 245, 145), new Vector(0.65, 0, -1)));
+		//spot light
+		scene2.lights.add(new SpotLight(new Color(500, 250, 250), new Point(10, -10, -130), new Vector(-100, -150, 250))
+				.setkL(0.0001).setkQ(0.000005));
+		//point light (Right side)
+		scene2.lights.add(new PointLight(new Color(500, 250, 250), new Point(110, -10, -130))
+				.setkL(0.0005).setkQ(0.0005));
 
-		ImageWriter imageWriter = new ImageWriter("lightSphereDirectionalPointSpot", 500, 500);
-		camera1.setImageWriter(imageWriter) //
-				.setRayTracer(new RayTracerBasic(scene1)) //
-				.renderImage() //
-				.writeToImage(); //
+		ImageWriter imageWriter = new ImageWriter("LightMultipleSourceTriangle", 500, 500);
+		camera2.setImageWriter(imageWriter)
+				.setRayTracer(new RayTracerBasic(scene2))
+				.renderImage()
+				.writeToImage();
 	}
 
-	/**
-	 * Produce a picture of a two triangles lighted by a directional light, point light and spot light
-	 */
-	@Test
-	public void trianglesDirectionalPointSpot() {// TODO need to change light coordinates
+
+	/*@Test
+	public void trianglesDirectionalPointSpot() {// TODO We can delete this
 		scene2.geometries.add(triangle1, triangle2);
 		scene2.lights.add(new DirectionalLight(trCL, trDL));
 		scene2.lights.add(new PointLight(trCL, trPL).setkL(0.001).setkQ(0.0002));
@@ -164,7 +191,7 @@ public class LightsTests {
 				.setRayTracer(new RayTracerBasic(scene2)) //
 				.renderImage() //
 				.writeToImage(); //
-	}
+	}*/
 //
 //	/**
 //	 * Produce a picture of a sphere lighted by a narrow spot light
