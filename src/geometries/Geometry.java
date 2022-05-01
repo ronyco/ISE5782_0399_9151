@@ -1,14 +1,11 @@
 package geometries;
 
-import primitives.Color;
-import primitives.Material;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
 
 /**
  * abstract class Geometry implements Geometric objects and function
  */
-public abstract class Geometry extends Intersectable{
+public abstract class Geometry extends Intersectable {
 
     /**
      * emission color of Geometry
@@ -18,10 +15,11 @@ public abstract class Geometry extends Intersectable{
     /**
      * Material of Geometry
      */
-    private Material material= new Material();
+    private Material material = new Material();
 
     /**
      * getter for Material
+     *
      * @return Material of Geometry
      */
     public Material getMaterial() {
@@ -30,6 +28,7 @@ public abstract class Geometry extends Intersectable{
 
     /**
      * Setter for material of Geometry
+     *
      * @param material of Geometry
      * @return Geometry object
      */
@@ -47,6 +46,7 @@ public abstract class Geometry extends Intersectable{
 
     /**
      * Getter for emission color
+     *
      * @return Color of emission
      */
     public Color getEmission() {
@@ -55,6 +55,7 @@ public abstract class Geometry extends Intersectable{
 
     /**
      * Setter for emission
+     *
      * @param emission how represents a color
      * @return a Geometry element
      */

@@ -9,10 +9,11 @@ public class DirectionalLight extends Light implements LightSource{
     /**
      * direction of light
      */
-    private Vector direction;
+    private final Vector direction;
 
     /**
-     * constructor for DirectionalLight
+     * Constructs directional light source with its intensity and direction of the light.
+     * The direction vector will be normalized.
      * @param intensity to initiate color
      * @param vector to initiate direction
      */
@@ -23,7 +24,7 @@ public class DirectionalLight extends Light implements LightSource{
 
     @Override
     public Color getIntensity(Point p) {
-        return getIntensity();
+        return intensity;
     }
 
     @Override

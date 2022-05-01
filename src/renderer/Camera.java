@@ -72,8 +72,8 @@ public class Camera {
         Point pc = p0.add(vTo.scale(distanceToVp));
 
         //Ratio (pixel width and weight)
-        double rY = (double) heightVp / nY;
-        double rX = (double) widthVp / nX;
+        double rY = heightVp / nY;
+        double rX = widthVp / nX;
 
         Point pij = pc;
 
@@ -163,7 +163,7 @@ public class Camera {
 
     /**
      * set Ray tracer
-     * @param rayTracerBase
+     * @param rayTracerBase ray tracer for the camera
      * @return Camera instance itself
      */
     public Camera setRayTracer(RayTracerBase rayTracerBase) {
@@ -176,11 +176,11 @@ public class Camera {
      */
     public Camera renderImage() {
         if (imageWriter == null)
-            throw new MissingResourceException("Missing Resource", "Camera", ImageWriter.class.getName());
+            throw new MissingResourceException("Missing Resource", "Camera", "Image Writer is null");
         if (rayTracerBase == null)
-            throw new MissingResourceException("Missing Resource","Camera", RayTracerBase.class.getName());
+            throw new MissingResourceException("Missing Resource","Camera", "Ray tracer is null");
         if (this.p0 == null || this.vTo == null || this.vRight == null || this.vUp == null || this.widthVp == 0 || this.heightVp == 0)
-            throw new MissingResourceException("Missing Resource", "Camera", Camera.class.getName()); //TODO don't know why not to check
+            throw new MissingResourceException("Missing Resource", "Camera", "Bad camera parameters");
 
         //rendering the image
         int nX = imageWriter.getNx();
@@ -201,7 +201,7 @@ public class Camera {
      */
     public void printGrid(int interval, Color intervalColor) {
         if (imageWriter == null)
-            throw new MissingResourceException("Missing Resource", "Camera", imageWriter.getClass().getName());
+            throw new MissingResourceException("Missing Resource", "Camera", "Image Writer is null");
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
         for (int i = 0; i < nY; i++) {
@@ -218,7 +218,7 @@ public class Camera {
      */
     public void writeToImage() {
         if (imageWriter == null)
-            throw new MissingResourceException("Missing Resource","Camera", imageWriter.getClass().getName());
+            throw new MissingResourceException("Missing Resource","Camera", "Image Writer is null");
         imageWriter.writeToImage();
     }
 }

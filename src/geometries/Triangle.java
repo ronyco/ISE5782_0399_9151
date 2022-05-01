@@ -25,30 +25,14 @@ public class Triangle extends Polygon {
         super(p1, p2, p3);
     }
 
-    /***
-     * Display some information about the triangle
-     */
     @Override
     public String toString() {
         return super.toString();
     }
 
-    /***
-     * Returns normal vector, who is the same as normal vector of the plane to the point passing by parameter
-     * @param point
-     * @return normal vector of the plane to the specific point passed by parameter
-     */
-    @Override
-    public Vector getNormal(Point point) {
-        return super.getNormal(point);
-    }
-
-
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-
-        List<GeoPoint> result = plane.findGeoIntersectionsHelper(ray);
-
+        List<GeoPoint> result = plane.findGeoIntersections(ray);
         //If there is no intersections with plane return null
         if (result == null)
             return null;
@@ -67,11 +51,7 @@ public class Triangle extends Polygon {
         double sign3 = alignZero(v.dotProduct(v3.crossProduct(v1)));
         if (sign1 * sign3 <= 0) return null;
 
-        List<GeoPoint> newResult = new LinkedList<>();
-        for (var item: result) {
-            newResult.add(new GeoPoint(this, item.point));
-        }
-        return newResult;
+        return List.of(new GeoPoint(this, result.get(0).point));
     }
 
 }

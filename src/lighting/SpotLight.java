@@ -2,20 +2,23 @@ package lighting;
 
 import primitives.*;
 
+import static primitives.Util.alignZero;
+
 /**
  * class SpotLight represents a point light in a specific direction
  */
-public class SpotLight extends PointLight{
+public class SpotLight extends PointLight {
     /**
      * direction of light
      */
-    private Vector direction;
+    private final Vector direction;
+
     /**
      * constructor for Light
      *
-     * @param intensity to initiate color
-     * @param point to initiate position
-     * @param vector to initiate
+     * @param intensity spotlight intensity
+     * @param point     spotlight position
+     * @param vector    spotlight direction vector (will be normalized)
      */
     public SpotLight(Color intensity, Point point, Vector vector) {
         super(intensity, point);
@@ -24,7 +27,7 @@ public class SpotLight extends PointLight{
 
     @Override
     public Color getIntensity(Point p) {
-        double dp = direction.dotProduct(getL(p));
-        return dp>0 ? getIntensityHelper(p).scale(dp) : getIntensityHelper(p).scale(0);
+        double dp = alignZero(direction.dotProduct(getL(p)));
+        return dp > 0 ? super.getIntensity(p).scale(dp) : Color.BLACK;
     }
 }

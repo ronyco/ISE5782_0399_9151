@@ -15,27 +15,34 @@ import java.util.List;
 public class Geometries extends Intersectable {
     private final List<Intersectable> intersections = new LinkedList<Intersectable>();
 
-    public Geometries() { }
-
+    /**
+     * Constructor of geometries who takes some intersectables
+     *
+     * @param intersectables geometric objects
+     */
     public Geometries(Intersectable... intersectables) {
         add(intersectables);
     }
 
+    /**
+     * Function that add intersectable to geometries
+     *
+     * @param intersectables with objects
+     */
     public void add(Intersectable... intersectables) {
-        Collections.addAll(intersections, intersectables);
+        if (intersectables.length != 0) Collections.addAll(intersections, intersectables);
     }
 
     @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<GeoPoint> result = null;
         for (var item : intersections) {
-            List<GeoPoint> itemList = item.findGeoIntersectionsHelper(ray);
-            if(itemList!= null){
-                if(result== null)//for the first time addition
-                {
-                    result= new LinkedList<>();
-                }
-                result.addAll(itemList);
+            List<GeoPoint> itemList = item.findGeoIntersections(ray);
+            if (itemList != null) {
+                if (result == null) //for the first time addition
+                    result = new LinkedList<>(itemList);
+                else
+                    result.addAll(itemList);
             }
         }
         return result;

@@ -7,22 +7,22 @@ import primitives.Vector;
 /**
  * class PointLight represents a light source as a point
  */
-public class PointLight extends Light implements LightSource{
+public class PointLight extends Light implements LightSource {
     /**
      * position of light source
      */
-    private Point position;
+    private final Point position;
 
     private double kC = 1.0;
-    private double  kL = 0.0;
+    private double kL = 0.0;
     private double kQ = 0.0;
 
     /**
      * constructor for PointLight
      *
      * @param intensity to initiate color
-     * @param point to initiate position
-      */
+     * @param point     to initiate position
+     */
     public PointLight(Color intensity, Point point) {
         super(intensity);
         this.position = point;
@@ -30,46 +30,41 @@ public class PointLight extends Light implements LightSource{
 
     /**
      * setter for kC
+     *
      * @param kC to initialize
      * @return PointLight object
      */
-    public PointLight setkC(double kC) {
+    public PointLight setKC(double kC) {
         this.kC = kC;
-        return  this;
+        return this;
     }
 
     /**
      * setter for kL
+     *
      * @param kL to initialize
      * @return PointLight object
      */
-    public PointLight setkL(double kL) {
+    public PointLight setKL(double kL) {
         this.kL = kL;
-        return  this;
-    }
-    /**
-     * setter for kQ
-     * @param kQ to initialize
-     * @return PointLight object
-     */
-    public PointLight setkQ(double kQ) {
-        this.kQ = kQ;
-        return  this;
+        return this;
     }
 
     /**
-     * helper function for getIntensity
-     * @param p point
-     * @return color
+     * setter for kQ
+     *
+     * @param kQ to initialize
+     * @return PointLight object
      */
-    public Color getIntensityHelper(Point p) {
-        double distance = position.distance(p);
-        return getIntensity().reduce(kC + kL * distance + kQ * (distance*distance));
+    public PointLight setKQ(double kQ) {
+        this.kQ = kQ;
+        return this;
     }
 
     @Override
     public Color getIntensity(Point p) {
-        return getIntensityHelper(p);
+        double distance = position.distance(p);
+        return intensity.reduce(kC + kL * distance + kQ * (distance * distance));
     }
 
     @Override

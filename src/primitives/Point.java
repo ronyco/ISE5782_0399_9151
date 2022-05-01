@@ -92,8 +92,7 @@ public class Point {
     public boolean equals(Object o)
     {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Point point = (Point) o;
+        if (o == null || !(o instanceof Point point)) return false;
         return xyz.equals(point.xyz);
     }
 

@@ -16,7 +16,7 @@ public class Sphere extends Geometry {
     private final double radius;
     private final double radius2;
 
-     /**
+    /**
      * Sphere constructor that initialize a sphere using a point that represent center of sphere and a radius
      */
     public Sphere(Point c, double r) {
@@ -82,7 +82,7 @@ public class Sphere extends Geometry {
         if (t2 <= 0) return null; // both will be behind the ray
 
         double t1 = alignZero(tm - th);
-        return t1 <= 0 ? List.of(new GeoPoint(this,ray.getPoint(t2))) :
+        return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) :
                 List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
 
     }

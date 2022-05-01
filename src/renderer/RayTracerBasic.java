@@ -10,9 +10,14 @@ import java.util.List;
 import static primitives.Util.*;
 
 /**
- *Ray Tracer Basic Class
+ * Ray Tracer Basic Class
  */
-public class RayTracerBasic extends RayTracerBase{
+public class RayTracerBasic extends RayTracerBase {
+    /**
+     * constructor for RayTracerBasic
+     *
+     * @param scene of 3D object
+     */
     public RayTracerBasic(Scene scene) {
         super(scene);
     }
@@ -20,15 +25,12 @@ public class RayTracerBasic extends RayTracerBase{
     @Override
     public Color traceRay(Ray ray) {
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
-        if (intersections != null) {
-            return calcColor(ray.findClosestGeoPoint(intersections),ray);
-        }
-        //ray did not intersect any geometrical object
-        return scene.background;
+        return intersections == null ? scene.background : calcColor(ray.findClosestGeoPoint(intersections), ray);
     }
 
     /**
      * Calculate color of a point with ambient light
+     *
      * @param geoPoint in the scene
      * @return Color of point
      */
@@ -38,7 +40,8 @@ public class RayTracerBasic extends RayTracerBase{
 
     /**
      * calculates effects on color
-     * @param gp point
+     *
+     * @param gp  point
      * @param ray Ray
      * @return color
      */
@@ -55,8 +58,8 @@ public class RayTracerBasic extends RayTracerBase{
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv)
                 Color iL = lightSource.getIntensity(gp.point);
-                color = color.add(iL.scale(calcDiffusive(material.kD, nl)),
-                        iL.scale(calcSpecular(material.kS, l, n, nl, v, material.nShininess)));
+                color = color.add(iL.scale(calcDiffusive(material.kD, nl)
+                        .add(calcSpecular(material.kS, l, n, nl, v, material.nShininess))));
             }
         }
         return color;
@@ -64,30 +67,29 @@ public class RayTracerBasic extends RayTracerBase{
 
     /**
      * calculates Specular effect
-     * @param ks of material
-     * @param l vector
-     * @param n vector
-     * @param nl double(n*l)
-     * @param V vector
-     * @param nShininess of material
-     * @return color
+     *
+     * @param ks         of material
+     * @param l          normalized from light source
+     * @param n          normal to the intersected geometry surface at the point
+     * @param nl         double(n*l)
+     * @param v          direction of the ray
+     * @param nShininess of material of the intersected geometry
+     * @return color of specular effect
      */
-    private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector V, int nShininess) {
-        if (isZero(nl)) {
-            throw new IllegalArgumentException("nl cannot be Zero for scaling the normal vector");
-        }
+    private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector v, int nShininess) {
         Vector r = l.add(n.scale(-2 * nl)); // nl must not be zero!
-        double vr = alignZero(V.dotProduct(r));
+        double vr = alignZero(v.dotProduct(r));
         if (vr >= 0) {
-            return new Double3(0); // view from direction opposite to r vector
+            return Double3.ZERO; // view from direction opposite to r vector
         }
-        // [rs,gs,bs]ks(-V.R)^p
-        return ks.scale(Math.pow(-1d * vr, nShininess));
+        // [rs,gs,bs]ks(-v.R)^p
+        return ks.scale(Math.pow(-vr, nShininess));
     }
 
     /**
      * calculates Diffusive effect
-     * @param kd of material
+     *
+     * @param kd diffusive attenuation factor of material
      * @param nl double(n*l)
      * @return color
      */
