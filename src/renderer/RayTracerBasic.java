@@ -36,7 +36,12 @@ public class RayTracerBasic extends RayTracerBase{
         return scene.ambientLight.getIntensity().add(calcLocalEffects(geoPoint, ray));
     }
 
-
+    /**
+     * calculates effects on color
+     * @param gp point
+     * @param ray Ray
+     * @return color
+     */
     private Color calcLocalEffects(GeoPoint gp, Ray ray) {
         Color color = gp.geometry.getEmission();
         Vector v = ray.getDir();
@@ -57,6 +62,16 @@ public class RayTracerBasic extends RayTracerBase{
         return color;
     }
 
+    /**
+     * calculates Specular effect
+     * @param ks of material
+     * @param l vector
+     * @param n vector
+     * @param nl double(n*l)
+     * @param V vector
+     * @param nShininess of material
+     * @return color
+     */
     private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector V, int nShininess) {
         if (isZero(nl)) {
             throw new IllegalArgumentException("nl cannot be Zero for scaling the normal vector");
@@ -69,6 +84,13 @@ public class RayTracerBasic extends RayTracerBase{
         // [rs,gs,bs]ks(-V.R)^p
         return ks.scale(Math.pow(-1d * vr, nShininess));
     }
+
+    /**
+     * calculates Diffusive effect
+     * @param kd of material
+     * @param nl double(n*l)
+     * @return color
+     */
     private Double3 calcDiffusive(Double3 kd, double nl) {
         return kd.scale(Math.abs(nl));
     }
