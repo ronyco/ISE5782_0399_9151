@@ -1,5 +1,6 @@
 package lighting;
 
+import geometries.Intersectable;
 import primitives.*;
 
 /**
@@ -30,5 +31,10 @@ public class DirectionalLight extends Light implements LightSource{
     @Override
     public Vector getL(Point p) {
         return direction;
+    }
+
+    @Override
+    public double getDistance(Intersectable.GeoPoint geoPoint) {
+        return Double.POSITIVE_INFINITY;
     }
 }

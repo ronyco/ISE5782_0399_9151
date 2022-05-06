@@ -31,6 +31,7 @@ public class Plane extends Geometry {
     /**
      * Constructor that initialize a plane using a point and a vector
      * Save vector after that it will be normalized
+     *
      * @param p point
      * @param v vector (Not necessarily normalized)
      */
@@ -72,7 +73,7 @@ public class Plane extends Geometry {
     }
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         //In the formula we have to find P, but first we have to find t
         //So that P = P0 + t.v | t > 0
         Point p0 = ray.getP0();
@@ -87,14 +88,16 @@ public class Plane extends Geometry {
         }
 
         //Denominator
-        double nv =normal.dotProduct(v);
+        double nv = normal.dotProduct(v);
         //Ray direction cannot be parallel to plane orientation
         if (isZero(nv))
             return null;
 
         //Numerator
         double t = alignZero(normal.dotProduct(p0Q0) / nv);
-        return t > 0 ? List.of(new GeoPoint(this, ray.getPoint(t))) : null;
+        return alignZero(t - maxDistance) <= 0 && t > 0 ? List.of(new GeoPoint(this, ray.getPoint(t))) : null;
         //If inferior to zero, no intersection
     }
+
+
 }

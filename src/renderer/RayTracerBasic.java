@@ -14,6 +14,11 @@ import static primitives.Util.*;
  */
 public class RayTracerBasic extends RayTracerBase {
     /**
+     * movement of beginning of rays
+     */
+    private static final double DELTA = 0.1;
+
+    /**
      * constructor for RayTracerBasic
      *
      * @param scene of 3D object
@@ -57,9 +62,11 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv)
-                Color iL = lightSource.getIntensity(gp.point);
-                color = color.add(iL.scale(calcDiffusive(material.kD, nl)
-                        .add(calcSpecular(material.kS, l, n, nl, v, material.nShininess))));
+                if (unshaded(gp, lightSource, l, n, nv)) {
+                    Color iL = lightSource.getIntensity(gp.point);
+                    color = color.add(iL.scale(calcDiffusive(material.kD, nl)
+                            .add(calcSpecular(material.kS, l, n, nl, v, material.nShininess))));
+                }
             }
         }
         return color;
@@ -95,5 +102,23 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Double3 calcDiffusive(Double3 kd, double nl) {
         return kd.scale(Math.abs(nl));
+    }
+
+    /**
+     * check if unshaded between point and light source
+     *
+     * @param gp point to check
+     * @param l
+     * @param n
+     * @return true if unshaded, false if shaded
+     */
+    private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nv) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
+        Point point = gp.point.add(delta);
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay,light.getDistance(gp));
+        if (intersections == null) return true;
+        return false;
     }
 }

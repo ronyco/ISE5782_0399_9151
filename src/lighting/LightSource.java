@@ -1,5 +1,6 @@
 package lighting;
 
+import geometries.Intersectable;
 import primitives.*;
 
 /**
@@ -19,4 +20,11 @@ public interface LightSource {
      * @return a vector
      */
     public Vector getL(Point p);
+
+    /**
+     * calcilate distance between light source and point
+     * @param geoPoint in scene
+     * @return distance
+     */
+    public double getDistance(Intersectable.GeoPoint geoPoint);
 }

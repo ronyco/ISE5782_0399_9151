@@ -1,5 +1,6 @@
 package lighting;
 
+import geometries.Intersectable;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
@@ -34,7 +35,7 @@ public class PointLight extends Light implements LightSource {
      * @param kC to initialize
      * @return PointLight object
      */
-    public PointLight setKC(double kC) {
+    public PointLight setKc(double kC) {
         this.kC = kC;
         return this;
     }
@@ -45,7 +46,7 @@ public class PointLight extends Light implements LightSource {
      * @param kL to initialize
      * @return PointLight object
      */
-    public PointLight setKL(double kL) {
+    public PointLight setKl(double kL) {
         this.kL = kL;
         return this;
     }
@@ -56,7 +57,7 @@ public class PointLight extends Light implements LightSource {
      * @param kQ to initialize
      * @return PointLight object
      */
-    public PointLight setKQ(double kQ) {
+    public PointLight setKq(double kQ) {
         this.kQ = kQ;
         return this;
     }
@@ -70,5 +71,10 @@ public class PointLight extends Light implements LightSource {
     @Override
     public Vector getL(Point p) {
         return p.subtract(position).normalize();
+    }
+
+    @Override
+    public double getDistance(Intersectable.GeoPoint geoPoint) {
+        return geoPoint.point.distance(position);
     }
 }
