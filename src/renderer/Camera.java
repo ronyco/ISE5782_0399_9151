@@ -186,18 +186,23 @@ public class Camera {
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
         for (int i = 0; i < nY; i++) {
-            for (int j = 0; j < nX; j++) {
-                castRay();
-                Ray ray = constructRay(nX, nY, j, i); //TODO replace with cast ray we have to create
-                imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
-            }
+            for (int j = 0; j < nX; j++)
+                castRay(nX, nY, j, i);
         }
         return this;
     }
 
-    private void castRay() {
-
+    /**
+     * construct ray through view plane
+     * @param nX View Plane X axis resolution
+     * @param nY view Plane Y axis resolution
+     * @param j row number
+     * @param i line number
+     */
+    private void castRay(int nX, int nY, int j, int i) {
+        imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(nX, nY, j, i)));
     }
+
 
     /**
      * Print Grid of the image

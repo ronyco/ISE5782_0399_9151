@@ -4,7 +4,13 @@ package primitives;
  * class Material represents a Material for geometric bodies
  */
 public class Material {
+    /**
+     * attenuation factor of Diffuse
+     */
     public Double3 kD = Double3.ZERO;
+    /**
+     * attenuation factor of specular
+     */
     public Double3 kS = Double3.ZERO;
 
     /**
