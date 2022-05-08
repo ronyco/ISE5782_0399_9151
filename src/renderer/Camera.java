@@ -187,11 +187,16 @@ public class Camera {
         int nY = imageWriter.getNy();
         for (int i = 0; i < nY; i++) {
             for (int j = 0; j < nX; j++) {
+                castRay();
                 Ray ray = constructRay(nX, nY, j, i); //TODO replace with cast ray we have to create
                 imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
             }
         }
         return this;
+    }
+
+    private void castRay() {
+
     }
 
     /**

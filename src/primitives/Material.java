@@ -6,6 +6,17 @@ package primitives;
 public class Material {
     public Double3 kD = Double3.ZERO;
     public Double3 kS = Double3.ZERO;
+
+    /**
+     * transparency
+     */
+    public Double3 kT = Double3.ZERO;
+
+    /**
+     * reflection
+     */
+    public Double3 kR = Double3.ZERO;
+
     /**
      * shininess of Material
      */
@@ -63,6 +74,26 @@ public class Material {
      */
     public Material setnShininess(int nShininess) {
         this.nShininess = nShininess;
+        return this;
+    }
+
+    /**
+     * setter of transparency
+     * @param kT transparency of material
+     * @return Material object
+     */
+    public Material setKt(Double3 kT) {
+        this.kT = kT;
+        return this;
+    }
+
+    /**
+     * setter of reflection
+     * @param kR reflection of material
+     * @return Material object
+     */
+    public Material setKr(Double3 kR) {
+        this.kR = kR;
         return this;
     }
 }
