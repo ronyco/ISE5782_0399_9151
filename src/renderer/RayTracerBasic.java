@@ -138,13 +138,14 @@ public class RayTracerBasic extends RayTracerBase {
      * @return true if light is not shaded however return false
      */
     private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nv) {
-        Vector lightDirection = l.scale(-1); // from point to light source
-        Ray lightRay = new Ray(gp.point, lightDirection, n);
+        Vector lightDirection = l.scale(-1);
+        Vector epsVector=n.scale(nv<0?DELTA:-1*DELTA);
 
-        double lightDistance = light.getDistance(gp.point);
-        var intersections = scene.geometries.findGeoIntersections(lightRay,lightDistance);
+        Point point =gp.point.add(epsVector);
+
+        Ray lightRay=new Ray(point,lightDirection);
+        List<GeoPoint> intersections=scene.geometries.findGeoIntersections((lightRay));
         return intersections == null;
-
 
 
         /***Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
@@ -187,9 +188,11 @@ public class RayTracerBasic extends RayTracerBase {
         Color color = Color.BLACK;
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
+
         Double3 kkr = material.kR.product(k);
         if (!kkr.lowerThan(MIN_CALC_COLOR_K))
             color = calcGlobalEffect(constructReflectedRay(gp.point, v, n), level, material.kR, kkr);
+
         Double3 kkt = material.kT.product(k);
         if (!kkt.lowerThan(MIN_CALC_COLOR_K))
             color = color.add(
