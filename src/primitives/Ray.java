@@ -1,18 +1,23 @@
 package primitives;
 
 import java.util.List;
-import java.util.Objects;
 
 import geometries.Intersectable.GeoPoint;
 
+import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
-
 /**
  * Ray class represents a ray in three dimension space, meaning a point with a one-sided direction
  */
 public class Ray {
     private final Point p0;
     private final Vector dir;
+
+    /**
+     * movement of beginning of rays
+     */
+    public static final double DELTA = 0.1;
+
 
     /**
      * Constructor to initialize Ray with point and normal vector
@@ -24,6 +29,29 @@ public class Ray {
         this.p0 = p0;
         this.dir = dir.normalize();
     }
+
+    /**
+     * Constructor to initialize Ray with point direction and normal
+     * @param p0 Begin of the point
+     * @param n normal to the vector
+     * @param dir represent direction of vector
+     *
+     */
+    public Ray(Point p0, Vector dir, Vector n) {
+        this.dir=dir;
+        // make sure the normal and the direction are not orthogonal
+        double nv = alignZero(n.dotProduct(dir));
+
+        // if not orthogonal
+        if (!isZero(nv)) {
+            Vector moveVector = n.scale(nv > 0 ? DELTA : -DELTA);
+            // move the head of the vector in the right direction
+            this.p0=p0.add(moveVector);
+        }
+        else
+            this.p0=p0;
+    }
+
 
     /***
      * Returns the point P0 of ray
@@ -89,7 +117,7 @@ public class Ray {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Ray ray)) return false;
+        if (!(o instanceof Ray ray)) return false;
         return p0.equals(ray.p0) && dir.equals(ray.dir);
     }
 
