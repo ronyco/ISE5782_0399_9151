@@ -74,7 +74,7 @@ public class PointLight extends Light implements LightSource {
     }
 
     @Override
-    public double getDistance(Intersectable.GeoPoint geoPoint) {
-        return geoPoint.point.distance(position);
+    public double getDistance(Point p) {
+        return position.distance(p);
     }
 }

@@ -23,8 +23,8 @@ public interface LightSource {
 
     /**
      * Calculate distance between light source and point
-     * @param geoPoint in scene
+     * @param p point in scene
      * @return distance
      */
-    public double getDistance(Intersectable.GeoPoint geoPoint);
+    public double getDistance(Point p);
 }

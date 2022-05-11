@@ -34,7 +34,7 @@ public class DirectionalLight extends Light implements LightSource{
     }
 
     @Override
-    public double getDistance(Intersectable.GeoPoint geoPoint) {
+    public double getDistance(Point p) {
         return Double.POSITIVE_INFINITY;
     }
 }

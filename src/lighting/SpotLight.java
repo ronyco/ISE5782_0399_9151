@@ -32,8 +32,4 @@ public class SpotLight extends PointLight {
         return dp > 0 ? super.getIntensity(p).scale(dp) : Color.BLACK;
     }
 
-    @Override
-    public double getDistance(Intersectable.GeoPoint geoPoint) {
-        return super.getDistance(geoPoint);
-    }
 }

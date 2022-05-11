@@ -1,5 +1,6 @@
 package renderer;
 
+import geometries.Geometry;
 import lighting.*;
 import primitives.*;
 import scene.Scene;
@@ -51,11 +52,14 @@ public class RayTracerBasic extends RayTracerBase {
      * @return color of the point
      */
     private Color calcColor(GeoPoint gp, Ray ray) {
-        return calcColor(gp,ray,MAX_CALC_COLOR_LEVEL, INITIAL_K);
+        return calcColor(gp,ray,MAX_CALC_COLOR_LEVEL, INITIAL_K).add(scene.ambientLight.getIntensity());
     }
 
     private Color calcColor(GeoPoint intersection, Ray ray, int level, Double3 k) {
-        Color color = (calcLocalEffects(intersection, ray));
+        if(intersection == null)
+            return scene.background;
+        Color color = intersection.geometry.getEmission();
+        color = color.add(calcLocalEffects(intersection, ray));
         return 1 == level ? color : color.add(calcGlobalEffects(intersection, ray, level, k));
     }
 
@@ -67,13 +71,18 @@ public class RayTracerBasic extends RayTracerBase {
      * @return color of local effect
      */
     private Color calcLocalEffects(GeoPoint gp, Ray ray) {
-        Color color = gp.geometry.getEmission();
+        Geometry geometry = gp.geometry;
+        Point point = gp.point;
+
+        Color color = geometry.getEmission();
         Vector v = ray.getDir();
-        Vector n = gp.geometry.getNormal(gp.point);
+        Vector n = geometry.getNormal(gp.point);
+
         double nv = alignZero(n.dotProduct(v));
         if (nv == 0)
-            return color;
-        Material material = gp.geometry.getMaterial();
+            return color.BLACK;
+        Material material = geometry.getMaterial();
+
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
@@ -91,12 +100,12 @@ public class RayTracerBasic extends RayTracerBase {
     /**
      * calculates Specular effect
      *
-     * @param ks         of material
+     * @param ks         factor of specular
      * @param l          normalized from light source
      * @param n          normal to the intersected geometry surface at the point
-     * @param nl         double(n*l)
+     * @param nl         dot product of l by n
      * @param v          direction of the ray
-     * @param nShininess of material of the intersected geometry
+     * @param nShininess factor of shining
      * @return color of specular effect
      */
     private Double3 calcSpecular(Double3 ks, Vector l, Vector n, double nl, Vector v, int nShininess) {
@@ -130,11 +139,19 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nv) {
         Vector lightDirection = l.scale(-1); // from point to light source
-        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
+        Ray lightRay = new Ray(gp.point, lightDirection, n);
+
+        double lightDistance = light.getDistance(gp.point);
+        var intersections = scene.geometries.findGeoIntersections(lightRay,lightDistance);
+        return intersections == null;
+
+
+
+        /***Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
         Point point = gp.point.add(delta);
         Ray lightRay = new Ray(point, lightDirection);
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, light.getDistance(gp));
-        return intersections == null;
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, light.getDistance(gp.point));
+        return intersections == null;**/
     }
 
     /**
@@ -193,7 +210,13 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private GeoPoint findClosestIntersection(Ray ray) {
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
-        return (intersections == null) ? null : ray.findClosestGeoPoint(intersections);
+        return (intersections == null || intersections.size() == 0) ? null : ray.findClosestGeoPoint(intersections);
     }
+
+
+
+
+
+
 
 }
