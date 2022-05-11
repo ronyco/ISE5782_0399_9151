@@ -22,7 +22,7 @@ public interface LightSource {
     public Vector getL(Point p);
 
     /**
-     * calcilate distance between light source and point
+     * Calculate distance between light source and point
      * @param geoPoint in scene
      * @return distance
      */

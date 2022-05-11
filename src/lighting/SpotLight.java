@@ -1,5 +1,6 @@
 package lighting;
 
+import geometries.Intersectable;
 import primitives.*;
 
 import static primitives.Util.alignZero;
@@ -29,5 +30,10 @@ public class SpotLight extends PointLight {
     public Color getIntensity(Point p) {
         double dp = alignZero(direction.dotProduct(getL(p)));
         return dp > 0 ? super.getIntensity(p).scale(dp) : Color.BLACK;
+    }
+
+    @Override
+    public double getDistance(Intersectable.GeoPoint geoPoint) {
+        return super.getDistance(geoPoint);
     }
 }

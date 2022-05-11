@@ -14,12 +14,12 @@ public class Material {
     public Double3 kS = Double3.ZERO;
 
     /**
-     * transparency
+     * Attenuation factor of transparency
      */
     public Double3 kT = Double3.ZERO;
 
     /**
-     * reflection
+     * Attenuation factor of reflection
      */
     public Double3 kR = Double3.ZERO;
 
@@ -30,7 +30,6 @@ public class Material {
 
     /**
      * Setter of kD of Material with Double3
-     *
      * @param kD of Material
      * @return Material object
      */
@@ -41,7 +40,6 @@ public class Material {
 
     /**
      * Setter of kD of Material with Double
-     *
      * @param kD of Material
      * @return Material object
      */
@@ -63,7 +61,6 @@ public class Material {
 
     /**
      * Setter of kS of Material with Double
-     *
      * @param kS of Material
      * @return Material object
      */
@@ -78,7 +75,7 @@ public class Material {
      * @param nShininess of Material
      * @return Material object
      */
-    public Material setnShininess(int nShininess) {
+    public Material setShininess(int nShininess) {
         this.nShininess = nShininess;
         return this;
     }
@@ -100,6 +97,16 @@ public class Material {
      */
     public Material setKr(Double3 kR) {
         this.kR = kR;
+        return this;
+    }
+
+    public Material setKr(double kR) {
+        this.kR = new Double3(kR);
+        return this;
+    }
+
+    public Material setKt(double kT) {
+        this.kT = new Double3(kT);
         return this;
     }
 }
