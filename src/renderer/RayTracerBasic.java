@@ -139,31 +139,7 @@ public class RayTracerBasic extends RayTracerBase {
     private Double3 calcDiffusive(Double3 kd, double nl) {
         return kd.scale(Math.abs(nl));
     }
-
-    /**
-     * Check if there is object shading light source from a point
-     *
-     * @param gp point with its geometry
-     * @param l  direction from light to point
-     * @param n  normal to point at the geometry
-     * @return true if light is not shaded however return false
-     */
-    private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nv) {
-        Vector lightDirection = l.scale(-1);
-        Vector epsVector = n.scale(nv < 0 ? DELTA : -1 * DELTA);
-
-        Point point = gp.point.add(epsVector);
-
-        Ray lightRay = new Ray(point, lightDirection, n);
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections((lightRay));
-        GeoPoint closestPoint = findClosestIntersection(lightRay);
-        if (intersections != null)
-            if (light.getDistance(gp.point) > closestPoint.point.distance(gp.point)
-                    && (closestPoint.geometry.getMaterial().kT).equals(Double3.ZERO))
-                return false;
-
-        return intersections == null || !(closestPoint.geometry.getMaterial().kT).equals(Double3.ZERO);
-    }
+    
 
     /***
      * Method that checks if there is an object shading light source from point
@@ -186,14 +162,13 @@ public class RayTracerBasic extends RayTracerBase {
             return Double3.ONE;
 
         Double3 ktr = Double3.ONE;
-        for (var intersection : intersections) {
-            ktr = ktr.product(intersection.geometry.getMaterial().kT);
-            {
+        for (var intersection : intersections)
+            if (light.getDistance(gp.point) > intersection.point.distance(gp.point)) {
+                ktr = ktr.product(intersection.geometry.getMaterial().kT);
                 if (ktr.lowerThan(MIN_CALC_COLOR_K)) {
                     return Double3.ZERO;
                 }
             }
-        }
         return ktr;
     }
 
