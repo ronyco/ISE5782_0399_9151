@@ -9,6 +9,7 @@ import primitives.*;
 public interface LightSource {
     /**
      * Calculate intensity of light at a point
+     *
      * @param p enlightened point
      * @return light intensity at the point
      */
@@ -16,6 +17,7 @@ public interface LightSource {
 
     /**
      * Get <u><b>normalized</b></u> vector from light to point
+     *
      * @param p which represent a point
      * @return a vector
      */
@@ -23,6 +25,7 @@ public interface LightSource {
 
     /**
      * Calculate distance between light source and point
+     *
      * @param p point in scene
      * @return distance
      */

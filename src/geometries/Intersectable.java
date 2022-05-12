@@ -23,8 +23,9 @@ public abstract class Intersectable {
 
         /**
          * helper class GeoPoint constructor
+         *
          * @param geometry object of intersection
-         * @param point of intersection
+         * @param point    of intersection
          */
         public GeoPoint(Geometry geometry, Point point) {
             this.geometry = geometry;
@@ -49,6 +50,7 @@ public abstract class Intersectable {
 
     /**
      * FindIntersections function calculates all the intersection points between a ray and the geometry
+     *
      * @param ray {@link Ray} to intersect with the geometry
      * @return list of intersections {@link Point}
      */
@@ -60,12 +62,14 @@ public abstract class Intersectable {
 
     /**
      * FindGeoIntersections function finds intersections with a specific geometry
+     *
      * @param ray from camera passing in parameter
      * @return List of intersections with geometry
      */
-    public List<GeoPoint> findGeoIntersections(Ray ray){
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
     }
+
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 
 }

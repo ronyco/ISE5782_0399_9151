@@ -25,6 +25,9 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private static final double MIN_CALC_COLOR_K = 0.001;
 
+    /**
+     * Initial K for calcColor recursion
+     */
     private static final Double3 INITIAL_K = Double3.ONE;
 
 
@@ -47,27 +50,36 @@ public class RayTracerBasic extends RayTracerBase {
      *
      * @param gp  Points and its geometry
      * @param ray direction of ray
-     * @return color of the point
+     * @return final color of the point
      */
     private Color calcColor(GeoPoint gp, Ray ray) {
         return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K).add(scene.ambientLight.getIntensity());
     }
 
-    private Color calcColor(GeoPoint intersection, Ray ray, int level, Double3 k) {
-        if (intersection == null)
+    /**
+     * Recursive color calculation. Calculate color of point using Phong reflectance model
+     *
+     * @param gp    Point and its geometry
+     * @param ray   direction
+     * @param level remain level of recursion
+     * @param k     Factor attenuation accumulated for recursion
+     * @return final color of the point
+     */
+    private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
+        if (gp == null)
             return scene.background;
-        Color color = calcLocalEffects(intersection, ray);
-        return 1 == level ? color : color.add(calcGlobalEffects(intersection, ray, level, k));
+        Color color = calcLocalEffects(gp, ray, k);
+        return 1 == level ? color : color.add(calcGlobalEffects(gp, ray, level, k));
     }
 
     /**
      * calculates effects on color
      *
      * @param gp  point and its geometry
-     * @param ray Ray
+     * @param ray direction
      * @return color of local effect
      */
-    private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+    private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
         Geometry geometry = gp.geometry;
         Point point = gp.point;
 
@@ -84,8 +96,10 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sing(nv)
-                if (unshaded(gp, lightSource, l, n, nv)) {
-                    Color iL = lightSource.getIntensity(point);
+                Double3 ktr = transparency(gp, lightSource, l, n, nv);
+                if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K)) {
+                    //if (unshaded(gp, lightSource, l, n, nv)) {
+                    Color iL = lightSource.getIntensity(point).scale(ktr);
                     color = color.add(iL.scale(calcDiffusive(material.kD, nl)
                             .add(calcSpecular(material.kS, l, n, nl, v, material.nShininess))));
                 }
@@ -127,7 +141,7 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * check if there is object shading light source from a point
+     * Check if there is object shading light source from a point
      *
      * @param gp point with its geometry
      * @param l  direction from light to point
@@ -149,13 +163,40 @@ public class RayTracerBasic extends RayTracerBase {
                 return false;
 
         return intersections == null || !(closestPoint.geometry.getMaterial().kT).equals(Double3.ZERO);
-
-        /***Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : -DELTA);
-         Point point = gp.point.add(delta);
-         Ray lightRay = new Ray(point, lightDirection);
-         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, light.getDistance(gp.point));
-         return intersections == null;**/
     }
+
+    /***
+     * Method that checks if there is an object shading light source from point
+     * @param gp point and its geometry
+     * @param light light source
+     * @param l direction from light to point
+     * @param n normal
+     * @param nv n dot product v
+     * @return accumulated transparency factor
+     */
+    private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n, double nv) {
+        Vector lightDirection = l.scale(-1);
+        Vector epsVector = n.scale(nv < 0 ? DELTA : -1 * DELTA);
+        Point point = gp.point.add(epsVector);
+
+        Ray lightRay = new Ray(point, lightDirection, n);
+        var intersections = scene.geometries.findGeoIntersections((lightRay));
+
+        if (intersections == null)
+            return Double3.ONE;
+
+        Double3 ktr = Double3.ONE;
+        for (var intersection : intersections) {
+            ktr = ktr.product(intersection.geometry.getMaterial().kT);
+            {
+                if (ktr.lowerThan(MIN_CALC_COLOR_K)) {
+                    return Double3.ZERO;
+                }
+            }
+        }
+        return ktr;
+    }
+
 
     /**
      * Construct a transparency ray from point. Ray will be moved across normal line in direction of ray
@@ -191,6 +232,14 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
 
+    /***
+     * Calculate global effect: reflection and refraction for a point color
+     * @param gp point and its geometry
+     * @param v ray direction
+     * @param level recursion level
+     * @param k attenuation factor of reflection/refraction
+     * @return global effects color
+     */
     private Color calcGlobalEffects(GeoPoint gp, Ray v, int level, Double3 k) {
         Color color = Color.BLACK;
         Vector n = gp.geometry.getNormal(gp.point);
@@ -207,6 +256,15 @@ public class RayTracerBasic extends RayTracerBase {
         return color;
     }
 
+    /**
+     * Recursion method for calculate global effect: refraction + reflection
+     *
+     * @param ray   direction
+     * @param level recursion level
+     * @param kx    parameter of recursion
+     * @param kkx   parameter of recursion
+     * @return global effects color
+     */
     private Color calcGlobalEffect(Ray ray, int level, Double3 kx, Double3 kkx) {
         GeoPoint gp = findClosestIntersection(ray);
         return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx).scale(kx));

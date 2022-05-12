@@ -30,6 +30,7 @@ public class Material {
 
     /**
      * Setter of kD of Material with Double3
+     *
      * @param kD of Material
      * @return Material object
      */
@@ -40,10 +41,11 @@ public class Material {
 
     /**
      * Setter of kD of Material with Double
+     *
      * @param kD of Material
      * @return Material object
      */
-    public Material setKd(Double kD) {
+    public Material setKd(double kD) {
         this.kD = new Double3(kD);
         return this;
     }
@@ -61,6 +63,7 @@ public class Material {
 
     /**
      * Setter of kS of Material with Double
+     *
      * @param kS of Material
      * @return Material object
      */
@@ -82,6 +85,7 @@ public class Material {
 
     /**
      * setter of transparency
+     *
      * @param kT transparency of material
      * @return Material object
      */
@@ -92,6 +96,7 @@ public class Material {
 
     /**
      * setter of reflection
+     *
      * @param kR reflection of material
      * @return Material object
      */
@@ -100,13 +105,28 @@ public class Material {
         return this;
     }
 
+
+    /**
+     * Setter of reflection
+     *
+     * @param kR reflection of material
+     * @return Material object
+     */
     public Material setKr(double kR) {
         this.kR = new Double3(kR);
         return this;
     }
 
+    /**
+     * Setter of transparency
+     *
+     * @param kT transparency of material
+     * @return material object
+     */
     public Material setKt(double kT) {
         this.kT = new Double3(kT);
         return this;
     }
+
+
 }

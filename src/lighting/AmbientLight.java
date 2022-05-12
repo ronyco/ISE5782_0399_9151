@@ -9,6 +9,7 @@ public class AmbientLight extends Light {
 
     /**
      * Constructor with 2 parameters using parent constructor
+     *
      * @param iA Basic light intensity
      * @param kA Factor of intensity
      */

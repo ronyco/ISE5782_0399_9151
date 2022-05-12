@@ -6,7 +6,7 @@ import primitives.*;
 /**
  * class DirectionalLight represents a directional light source
  */
-public class DirectionalLight extends Light implements LightSource{
+public class DirectionalLight extends Light implements LightSource {
     /**
      * direction of light
      */
@@ -15,8 +15,9 @@ public class DirectionalLight extends Light implements LightSource{
     /**
      * Constructs directional light source with its intensity and direction of the light.
      * The direction vector will be normalized.
+     *
      * @param intensity to initiate color
-     * @param vector to initiate direction
+     * @param vector    to initiate direction
      */
     public DirectionalLight(Color intensity, Vector vector) {
         super(intensity);
