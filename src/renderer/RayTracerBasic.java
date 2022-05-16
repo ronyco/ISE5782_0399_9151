@@ -217,17 +217,21 @@ public class RayTracerBasic extends RayTracerBase {
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
         Color color1 = Color.BLACK, color2 = Color.BLACK;
-        List<Ray> beam1 = constructReflectedRay(gp.point, v, n).createBeamOfRays(material.kG);
-        List<Ray> beam2 = constructRefractedRay(gp.point, v, n).createBeamOfRays(material.kB);
 
-        for (Ray ray : beam1) {
-            color1 = color1.add(calcGlobalEffect(ray, level, k, material.kR));
+        if (!material.kR.equals(0)) {
+            List<Ray> beam1 = constructReflectedRay(gp.point, v, n).createBeamOfRays(material.kG);
+            for (Ray ray : beam1) {
+                color1 = color1.add(calcGlobalEffect(ray, level, k, material.kR));
+            }
+            color1.reduce(beam1.size());
         }
-        color1.reduce(beam1.size());
-        for (Ray ray : beam1) {
-            color2 = color2.add(calcGlobalEffect(ray, level, k, material.kT));
+        if (!material.kT.equals(0)) {
+            List<Ray> beam2 = constructRefractedRay(gp.point, v, n).createBeamOfRays(material.kB);
+            for (Ray ray : beam2) {
+                color2 = color2.add(calcGlobalEffect(ray, level, k, material.kT));
+            }
+            color2.reduce(beam2.size());
         }
-        color2.reduce(beam2.size());
         return color1.add(color2);
     }
 
