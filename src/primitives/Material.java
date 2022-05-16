@@ -29,6 +29,15 @@ public class Material {
     public int nShininess = 0;
 
     /**
+     * factor of glossiness
+     */
+     public double kG = 0;
+    /**
+     * factor of blurriness
+     */
+    public double kB = 0;
+
+    /**
      * Setter of kD of Material with Double3
      *
      * @param kD of Material
@@ -128,5 +137,18 @@ public class Material {
         return this;
     }
 
+    /**
+     * setter of glossiness
+     * @param kG for glossiness of material
+     * @return material object
+     */
+    public Material setkG(double kG) {
+        this.kG = kG;
+        return this;
+    }
 
+    public Material setkB(double kB) {
+        this.kB = kB;
+        return this;
+    }
 }

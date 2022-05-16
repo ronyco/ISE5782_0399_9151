@@ -1,11 +1,13 @@
 package primitives;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import geometries.Intersectable.GeoPoint;
 
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
+
 /**
  * Ray class represents a ray in three dimension space, meaning a point with a one-sided direction
  */
@@ -32,24 +34,17 @@ public class Ray {
 
     /**
      * Constructor to initialize Ray with point direction and normal
-     * @param p0 Begin of the point
-     * @param n normal to the vector
-     * @param dir represent direction of vector
      *
+     * @param p0  Begin of the point
+     * @param n   normal to the vector (must not be orthogonal to the dir vector)
+     * @param dir represent direction of vector (must be normalized)
      */
     public Ray(Point p0, Vector dir, Vector n) {
-        this.dir=dir;
+        this.dir = dir;
         // make sure the normal and the direction are not orthogonal
         double nv = alignZero(n.dotProduct(dir));
-
-        // if not orthogonal
-        if (!isZero(nv)) {
-            Vector moveVector = n.scale(nv > 0 ? DELTA : -DELTA);
-            // move the head of the vector in the right direction
-            this.p0=p0.add(moveVector);
-        }
-        else
-            this.p0=p0;
+        // move the head of the vector in the right direction
+        this.p0 = p0.add(n.scale(nv > 0 ? DELTA : -DELTA));
     }
 
 
@@ -127,5 +122,43 @@ public class Ray {
                 "p0=" + p0 +
                 ", dir=" + dir +
                 '}';
+    }
+
+    /**
+     * create beam of rays in direction of ray at virtual square put in given distance
+     *
+     * @param deltaLength square that rays will go through will be placed at distance
+     * @return list of beam of rays
+     */
+    public List<Ray> createBeamOfRays(double deltaLength) {
+        List<Ray> beam = new LinkedList<Ray>();
+        beam.add(this);
+        if(alignZero(deltaLength)==0)
+            return beam;
+        Vector sidePivot = dir.crossProduct(new Vector(0, 0, 1)).normalize();
+        Vector upPivot = dir.crossProduct(sidePivot).normalize();
+
+        int i, j;
+        //first quarter
+        for (i = 1; i <= 3; i++)
+            for (j = 3; j <= 3; j++)
+                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j)))));
+        //second quarter
+        sidePivot = sidePivot.scale(-1);
+        for (i = 1; i <= 3; i++)
+            for (j = 3; j <= 3; j++)
+                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j)))));
+        //third quarter
+        upPivot = upPivot.scale(-1);
+        for (i = 1; i <= 3; i++)
+            for (j = 3; j <= 3; j++)
+                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j)))));
+        //fourth quarter
+        sidePivot = sidePivot.scale(-1);
+        for (i = 1; i <= 3; i++)
+            for (j = 3; j <= 3; j++)
+                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j)))));
+
+        return beam;
     }
 }

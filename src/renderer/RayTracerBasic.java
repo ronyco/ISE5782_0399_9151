@@ -6,6 +6,7 @@ import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Ray.DELTA;
@@ -53,7 +54,8 @@ public class RayTracerBasic extends RayTracerBase {
      * @return final color of the point
      */
     private Color calcColor(GeoPoint gp, Ray ray) {
-        return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K).add(scene.ambientLight.getIntensity());
+        return gp == null ? scene.background
+                : calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K).add(scene.ambientLight.getIntensity());
     }
 
     /**
@@ -66,8 +68,6 @@ public class RayTracerBasic extends RayTracerBase {
      * @return final color of the point
      */
     private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
-        if (gp == null)
-            return scene.background;
         Color color = calcLocalEffects(gp, ray, k);
         return 1 == level ? color : color.add(calcGlobalEffects(gp, ray, level, k));
     }
@@ -139,7 +139,6 @@ public class RayTracerBasic extends RayTracerBase {
     private Double3 calcDiffusive(Double3 kd, double nl) {
         return kd.scale(Math.abs(nl));
     }
-    
 
     /***
      * Method that checks if there is an object shading light source from point
@@ -152,7 +151,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n, double nv) {
         Vector lightDirection = l.scale(-1);
-        Vector epsVector = n.scale(nv < 0 ? DELTA : -1 * DELTA);
+        Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
         Point point = gp.point.add(epsVector);
 
         Ray lightRay = new Ray(point, lightDirection, n);
@@ -172,7 +171,6 @@ public class RayTracerBasic extends RayTracerBase {
         return ktr;
     }
 
-
     /**
      * Construct a transparency ray from point. Ray will be moved across normal line in direction of ray
      *
@@ -181,8 +179,9 @@ public class RayTracerBasic extends RayTracerBase {
      * @param ray      from the geometry
      * @return new refracted ray
      */
-    private Ray constructRefractedRay(Point pointGeo, Ray ray, Vector n) {
-        return new Ray(pointGeo, ray.getDir(), n);
+    private List<Ray> constructRefractedRay(Point pointGeo, Ray ray, Vector n, double deltaLength) {
+
+        return new Ray(pointGeo, ray.getDir(), n).createBeamOfRays(deltaLength);
     }
 
     /***
@@ -192,18 +191,17 @@ public class RayTracerBasic extends RayTracerBase {
      * @param n normal
      * @return new reflected ray
      */
-    private Ray constructReflectedRay(Point pointGeo, Ray ray, Vector n) {
+    private List<Ray> constructReflectedRay(Point pointGeo, Ray ray, Vector n, double deltaLength) {
         // r = v -2.(v.n).n
         Vector v = ray.getDir();
-        double dvn = v.dotProduct(n);
-
-        if (dvn == 0) {
+        double dvn = alignZero(v.dotProduct(n));
+        if (dvn == 0)
             return null;
-        }
+
         Vector vn = n.scale(-2 * dvn);
         Vector r = v.add(vn);
         // use the constructor with 3 arguments to move the head
-        return new Ray(pointGeo, r, n);
+        return new Ray(pointGeo, r, n).createBeamOfRays(deltaLength);
     }
 
 
@@ -216,19 +214,23 @@ public class RayTracerBasic extends RayTracerBase {
      * @return global effects color
      */
     private Color calcGlobalEffects(GeoPoint gp, Ray v, int level, Double3 k) {
-        Color color = Color.BLACK;
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
+        Color color1 = Color.BLACK, color2 = Color.BLACK;
+        List<Ray> beam1 = constructReflectedRay(gp.point, v, n, material.kG);
+        List<Ray> beam2 = constructRefractedRay(gp.point, v, n, material.kB);
 
-        Double3 kkr = material.kR.product(k);
-        if (!kkr.lowerThan(MIN_CALC_COLOR_K))
-            color = calcGlobalEffect(constructReflectedRay(gp.point, v, n), level, material.kR, kkr);
-
-        Double3 kkt = material.kT.product(k);
-        if (!kkt.lowerThan(MIN_CALC_COLOR_K))
-            color = color.add(
-                    calcGlobalEffect(constructRefractedRay(gp.point, v, n), level, material.kT, kkt));
-        return color;
+        for (Ray ray : beam1) {
+            color1 = color1.add(calcGlobalEffect(ray, level, k, material.kR));
+        }
+        color1.reduce(beam1.size());
+        for (Ray ray : beam1) {
+            color2 = color2.add(calcGlobalEffect(ray, level, k, material.kT));
+        }
+        color2.reduce(beam2.size());
+        return color1.add(color2).reduce(2);
+//        return calcGlobalEffect(constructReflectedRay(gp.point, v, n, material.kG), level, k, material.kR)
+//                .add(calcGlobalEffect(constructRefractedRay(gp.point, v, n, material.kB), level, k, material.kT));
     }
 
     /**
@@ -236,13 +238,15 @@ public class RayTracerBasic extends RayTracerBase {
      *
      * @param ray   direction
      * @param level recursion level
-     * @param kx    parameter of recursion
-     * @param kkx   parameter of recursion
+     * @param k     parameter of recursion
+     * @param kx    factor for transparency or reflection
      * @return global effects color
      */
-    private Color calcGlobalEffect(Ray ray, int level, Double3 kx, Double3 kkx) {
+    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
         GeoPoint gp = findClosestIntersection(ray);
-        return (gp == null ? scene.background : calcColor(gp, ray, level - 1, kkx).scale(kx));
+        if (gp == null) return scene.background;
+        Double3 kkx = kx.product(k);
+        return kkx.lowerThan(MIN_CALC_COLOR_K) ? Color.BLACK : calcColor(gp, ray, level - 1, kkx).scale(kx);
     }
 
     /**
@@ -255,6 +259,5 @@ public class RayTracerBasic extends RayTracerBase {
         List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
         return (intersections == null || intersections.size() == 0) ? null : ray.findClosestGeoPoint(intersections);
     }
-
 
 }
