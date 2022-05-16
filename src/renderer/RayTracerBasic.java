@@ -179,9 +179,9 @@ public class RayTracerBasic extends RayTracerBase {
      * @param ray      from the geometry
      * @return new refracted ray
      */
-    private List<Ray> constructRefractedRay(Point pointGeo, Ray ray, Vector n, double deltaLength) {
+    private Ray constructRefractedRay(Point pointGeo, Ray ray, Vector n) {
 
-        return new Ray(pointGeo, ray.getDir(), n).createBeamOfRays(deltaLength);
+        return new Ray(pointGeo, ray.getDir(), n);
     }
 
     /***
@@ -191,7 +191,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param n normal
      * @return new reflected ray
      */
-    private List<Ray> constructReflectedRay(Point pointGeo, Ray ray, Vector n, double deltaLength) {
+    private Ray constructReflectedRay(Point pointGeo, Ray ray, Vector n) {
         // r = v -2.(v.n).n
         Vector v = ray.getDir();
         double dvn = alignZero(v.dotProduct(n));
@@ -201,7 +201,7 @@ public class RayTracerBasic extends RayTracerBase {
         Vector vn = n.scale(-2 * dvn);
         Vector r = v.add(vn);
         // use the constructor with 3 arguments to move the head
-        return new Ray(pointGeo, r, n).createBeamOfRays(deltaLength);
+        return new Ray(pointGeo, r, n);
     }
 
 
@@ -217,8 +217,8 @@ public class RayTracerBasic extends RayTracerBase {
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
         Color color1 = Color.BLACK, color2 = Color.BLACK;
-        List<Ray> beam1 = constructReflectedRay(gp.point, v, n, material.kG);
-        List<Ray> beam2 = constructRefractedRay(gp.point, v, n, material.kB);
+        List<Ray> beam1 = constructReflectedRay(gp.point, v, n).createBeamOfRays(material.kG);
+        List<Ray> beam2 = constructRefractedRay(gp.point, v, n).createBeamOfRays(material.kB);
 
         for (Ray ray : beam1) {
             color1 = color1.add(calcGlobalEffect(ray, level, k, material.kR));
@@ -228,9 +228,7 @@ public class RayTracerBasic extends RayTracerBase {
             color2 = color2.add(calcGlobalEffect(ray, level, k, material.kT));
         }
         color2.reduce(beam2.size());
-        return color1.add(color2).reduce(2);
-//        return calcGlobalEffect(constructReflectedRay(gp.point, v, n, material.kG), level, k, material.kR)
-//                .add(calcGlobalEffect(constructRefractedRay(gp.point, v, n, material.kB), level, k, material.kT));
+        return color1.add(color2);
     }
 
     /**
