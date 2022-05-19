@@ -216,21 +216,23 @@ public class RayTracerBasic extends RayTracerBase {
     private Color calcGlobalEffects(GeoPoint gp, Ray v, int level, Double3 k) {
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        Color color1 = Color.BLACK, color2 = Color.BLACK;
+        Color color1 = calcGlobalEffect(constructReflectedRay(gp.point, v, n), level, k, material.kR),
+                color2 = calcGlobalEffect(constructRefractedRay(gp.point, v, n), level, k, material.kT);
 
-        if (!material.kR.equals(0)) {
+        if (!k.lowerThan(MIN_CALC_COLOR_K)) {
             List<Ray> beam1 = constructReflectedRay(gp.point, v, n).createBeamOfRays(material.kG);
             for (Ray ray : beam1) {
-                color1 = color1.add(calcGlobalEffect(ray, level, k, material.kR));
+                color1 = color1.add(calcGlobalEffect(ray, level, material.kR.add(k), material.kR));
             }
-            color1.reduce(beam1.size());
+            color1 = color1.reduce(beam1.size());
         }
-        if (!material.kT.equals(0)) {
+
+        if (!k.lowerThan(MIN_CALC_COLOR_K)) {
             List<Ray> beam2 = constructRefractedRay(gp.point, v, n).createBeamOfRays(material.kB);
             for (Ray ray : beam2) {
-                color2 = color2.add(calcGlobalEffect(ray, level, k, material.kT));
+                color2 = color2.add(calcGlobalEffect(ray, level, material.kT.add(k), material.kT));
             }
-            color2.reduce(beam2.size());
+            color2 = color2.reduce(beam2.size());
         }
         return color1.add(color2);
     }

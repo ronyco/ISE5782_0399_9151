@@ -146,7 +146,11 @@ public class Material {
         this.kG = kG;
         return this;
     }
-
+    /**
+     * setter of blurriness
+     * @param kB for blurriness of material
+     * @return material object
+     */
     public Material setkB(double kB) {
         this.kB = kB;
         return this;

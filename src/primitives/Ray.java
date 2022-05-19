@@ -133,7 +133,7 @@ public class Ray {
     public List<Ray> createBeamOfRays(double deltaLength) {
         List<Ray> beam = new LinkedList<Ray>();
         beam.add(this);
-        if(alignZero(deltaLength)==0)
+        if(deltaLength==0)
             return beam;
         Vector sidePivot = dir.crossProduct(new Vector(0, 0, 1)).normalize();
         Vector upPivot = dir.crossProduct(sidePivot).normalize();
@@ -141,23 +141,23 @@ public class Ray {
         int i, j;
         //first quarter
         for (i = 1; i <= 3; i++)
-            for (j = 3; j <= 3; j++)
-                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j)))));
+            for (j = 1; j <=3; j++)
+                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j))).normalize()));
         //second quarter
         sidePivot = sidePivot.scale(-1);
         for (i = 1; i <= 3; i++)
-            for (j = 3; j <= 3; j++)
-                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j)))));
+            for (j = 1; j <= 3; j++)
+                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j))).normalize()));
         //third quarter
         upPivot = upPivot.scale(-1);
         for (i = 1; i <= 3; i++)
-            for (j = 3; j <= 3; j++)
-                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j)))));
+            for (j = 1; j <= 3; j++)
+                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j))).normalize()));
         //fourth quarter
         sidePivot = sidePivot.scale(-1);
         for (i = 1; i <= 3; i++)
-            for (j = 3; j <= 3; j++)
-                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j)))));
+            for (j = 1; j <= 3; j++)
+                beam.add(new Ray(p0, dir.add(sidePivot.scale(deltaLength * i).add(upPivot.scale(deltaLength * j))).normalize()));
 
         return beam;
     }
