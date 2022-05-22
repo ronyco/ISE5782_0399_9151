@@ -186,7 +186,7 @@ public class ReflectionRefractionTests {
      * producing a shading
      */
     @Test
-    public void shadowTrianglesSphere() {
+    public void shadowTrianglesSphereDifuse() {
         Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(200, 200).setVPDistance(1000) //
                 .setRayTracer(new RayTracerBasic(scene));
@@ -206,7 +206,7 @@ public class ReflectionRefractionTests {
                 new DirectionalLight(new Color(blue), new Vector(-1, -1, -4)) //
                        );
 
-        camera.setImageWriter(new ImageWriter("shadowTrianglesSphere", 600, 600)) //
+        camera.setImageWriter(new ImageWriter("shadowTrianglesSphereDifuse", 600, 600)) //
                 .renderImage() //
                 .writeToImage();
     }
