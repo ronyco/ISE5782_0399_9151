@@ -180,7 +180,6 @@ public class RayTracerBasic extends RayTracerBase {
      * @return new refracted ray
      */
     private Ray constructRefractedRay(Point pointGeo, Ray ray, Vector n) {
-
         return new Ray(pointGeo, ray.getDir(), n);
     }
 
@@ -216,25 +215,8 @@ public class RayTracerBasic extends RayTracerBase {
     private Color calcGlobalEffects(GeoPoint gp, Ray v, int level, Double3 k) {
         Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
-        Color color1 = calcGlobalEffect(constructReflectedRay(gp.point, v, n), level, k, material.kR),
-                color2 = calcGlobalEffect(constructRefractedRay(gp.point, v, n), level, k, material.kT);
-
-        if (!k.lowerThan(MIN_CALC_COLOR_K)) {
-            List<Ray> beam1 = constructReflectedRay(gp.point, v, n).createBeamOfRays(material.kG);
-            for (Ray ray : beam1) {
-                color1 = color1.add(calcGlobalEffect(ray, level, material.kR.add(k), material.kR));
-            }
-            color1 = color1.reduce(beam1.size());
-        }
-
-        if (!k.lowerThan(MIN_CALC_COLOR_K)) {
-            List<Ray> beam2 = constructRefractedRay(gp.point, v, n).createBeamOfRays(material.kB);
-            for (Ray ray : beam2) {
-                color2 = color2.add(calcGlobalEffect(ray, level, material.kT.add(k), material.kT));
-            }
-            color2 = color2.reduce(beam2.size());
-        }
-        return color1.add(color2);
+        return calcGlobalEffect(constructReflectedRay(gp.point, v, n), level, k, material.kR, material.kG)
+                .add(calcGlobalEffect(constructRefractedRay(gp.point, v, n), level, k, material.kT, material.kB));
     }
 
     /**
@@ -246,11 +228,16 @@ public class RayTracerBasic extends RayTracerBase {
      * @param kx    factor for transparency or reflection
      * @return global effects color
      */
-    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
-        GeoPoint gp = findClosestIntersection(ray);
-        if (gp == null) return scene.background;
+    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx, double blur) {
         Double3 kkx = kx.product(k);
-        return kkx.lowerThan(MIN_CALC_COLOR_K) ? Color.BLACK : calcColor(gp, ray, level - 1, kkx).scale(kx);
+        if (kkx.lowerThan(MIN_CALC_COLOR_K)) return Color.BLACK;
+        var beam = ray.createBeamOfRays(blur);
+        Color color = Color.BLACK;
+        for (var r : beam) {
+            GeoPoint gp = findClosestIntersection(r);
+            color = color.add(gp == null ? scene.background : calcColor(gp, r, level - 1, kkx));
+        }
+        return color.reduce(beam.size()).scale(kx);
     }
 
     /**

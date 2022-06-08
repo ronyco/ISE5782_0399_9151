@@ -8,6 +8,79 @@ import java.util.*;
  * abstract class for finding intersections points
  */
 public abstract class Intersectable {
+
+    /**
+     * box for intersectable
+     */
+    public Box box = null;
+
+    /**
+     * box feature
+     * @return instance
+     */
+    public Intersectable createBox() {
+        box = setBoundBox();
+        return this;
+    }
+
+    /**
+     * internal class to create a box
+     */
+    public static class Box {
+        public Point min, max;
+
+        public Box(Point min, Point max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        /**
+         * check if intersect with box
+         *
+         * @param ray for intersection
+         * @return true in intersect false if not
+         */
+        private boolean privateBoundingIntersection(Ray ray) {
+            Point po = ray.getP0();
+            double dfX = 1.0 / ray.getDir().getX();
+            double dfY = 1.0 / ray.getDir().getY();
+            double dfZ = 1.0 / ray.getDir().getZ();
+
+            double t1 = (min.getX() - po.getX()) * dfX;
+            double t2 = (max.getX() - po.getX()) * dfX;
+            double t3 = (min.getX() - po.getX()) * dfY;
+            double t4 = (max.getX() - po.getX()) * dfY;
+            double t5 = (min.getX() - po.getX()) * dfZ;
+            double t6 = (max.getX() - po.getX()) * dfZ;
+
+            double tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
+            double tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
+
+            if (tmax < 0) return false;
+            if (tmin > tmax) return false;
+            return true;
+        }
+    }
+
+    /**
+     * check if intersect with box
+     *
+     * @param ray for intersection
+     * @return true in intersect false if not
+     */
+    public boolean boundingIntersection(Ray ray) {
+        if (box != null)
+            return box.privateBoundingIntersection(ray);
+        return true;
+    }
+
+
+    /**
+     * for each intersectable create bound box
+     */
+    abstract public Box setBoundBox();
+
+
     /**
      * class GeoPoint to help with findIntersections
      */
@@ -67,6 +140,7 @@ public abstract class Intersectable {
      * @return List of intersections with geometry
      */
     public List<GeoPoint> findGeoIntersections(Ray ray) {
+        if (!boundingIntersection(ray)) return null;
         return findGeoIntersectionsHelper(ray);
     }
 

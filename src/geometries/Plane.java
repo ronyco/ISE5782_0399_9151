@@ -73,6 +73,12 @@ public class Plane extends Geometry {
     }
 
     @Override
+    public Box setBoundBox() {
+        return new Box(new Point(Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY,Double.NEGATIVE_INFINITY),
+                new Point(Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY,Double.POSITIVE_INFINITY));
+    }
+
+    @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         //In the formula we have to find P, but first we have to find t
         //So that P = P0 + t.v | t > 0

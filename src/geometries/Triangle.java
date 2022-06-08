@@ -52,6 +52,7 @@ public class Triangle extends Polygon {
         if (sign1 * sign3 <= 0) return null;
 
         return List.of(new GeoPoint(this, result.get(0).point));
+
     }
 
 }

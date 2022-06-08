@@ -46,6 +46,11 @@ public class Tube extends Geometry {
     }
 
     @Override
+    public Box setBoundBox() {
+        return null;
+    }
+
+    @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         return null;
     }

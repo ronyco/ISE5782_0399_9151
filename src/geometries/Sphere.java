@@ -5,6 +5,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
+import java.util.zip.DeflaterOutputStream;
 
 import static primitives.Util.alignZero;
 
@@ -58,6 +59,15 @@ public class Sphere extends Geometry {
 
 
     @Override
+    public Box setBoundBox() {
+        double cx = center.getX();
+        double cy = center.getY();
+        double cz = center.getZ();
+        double r = radius;
+        return new Box(new Point(cx - r, cy - r, cz - r), new Point(cx + r, cy - +r, cz + r));
+    }
+
+    @Override
     protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
@@ -84,6 +94,7 @@ public class Sphere extends Geometry {
         double t1 = alignZero(tm - th);
         return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) :
                 List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+
 
     }
 

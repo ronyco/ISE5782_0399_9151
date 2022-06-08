@@ -93,8 +93,30 @@ public class Polygon extends Geometry {
 
 
     @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public Box setBoundBox() {
+        double minX = vertices.get(0).getX();
+        double maxX = minX;
+        double minY = vertices.get(0).getY();
+        double maxY = minY;
+        double minZ = vertices.get(0).getZ();
+        double maxZ = minZ;
+        double x = 0, y = 0, z = 0;
+        for (Point p : vertices) {
+            x = p.getX();
+            y = p.getY();
+            z = p.getZ();
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+            if (z < minZ) minZ = z;
+            if (z > maxZ) maxZ = z;
+        }
+        return new Box(new Point(minX, minY, minZ), new Point(maxX, maxY, maxZ));
+    }
 
+    @Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<GeoPoint> result = plane.findGeoIntersections(ray);
 
         //If there is no intersections with plane return null
@@ -135,6 +157,7 @@ public class Polygon extends Geometry {
         }
 
         return List.of(new GeoPoint(this, result.get(0).point));
+
     }
 
 

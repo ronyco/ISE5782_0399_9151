@@ -13,7 +13,7 @@ public class Vector extends Point {
      * @param z third number coordinate
      */
     public Vector(double x, double y, double z) {
-        this(new Double3(x,y,z));
+        this(new Double3(x, y, z));
     }
 
     /**
@@ -111,4 +111,12 @@ public class Vector extends Point {
         return super.equals(o);
     }
 
+    /**
+     * return vector as Point
+     *
+     * @return Point
+     */
+    public Point getPoint() {
+        return new Point(this.xyz);
+    }
 }
