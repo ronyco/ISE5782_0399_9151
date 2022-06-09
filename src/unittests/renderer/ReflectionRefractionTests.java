@@ -393,7 +393,7 @@ public class ReflectionRefractionTests {
                 .setRayTracer(new RayTracerBasic(scene));
         Geometries[] geometries = new Geometries[13];
         for (int i = 0; i < 13; i++) {
-            geometries[i]=new Geometries();
+            geometries[i] = new Geometries();
         }
         scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), new Double3(0.15)));
         for (int i = 0; i < 100; i++) {
@@ -409,7 +409,7 @@ public class ReflectionRefractionTests {
             geometries[3].add(
                     new Sphere(new Point(3, 1, 1.5), 1.5).setEmission(new Color(yellow))
                             .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100))).createBox());
-             geometries[4].add(
+            geometries[4].add(
                     new Sphere(new Point(-3, 1, 1.5), 1.5).setEmission(new Color(green))
                             .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100))).createBox());
             geometries[5].add(
@@ -446,11 +446,13 @@ public class ReflectionRefractionTests {
             scene.geometries.add(geometries[i].createBox());
         }
         scene.geometries.createBox();
+        scene.geometries.autoBVH(10);
         scene.lights.add(new DirectionalLight(new Color(200, 200, 200), new Vector(0, 0, -1)));
         camera.setImageWriter(new ImageWriter("Apple6", 600, 600)) //
                 .renderImage() //
                 .writeToImage();
     }
+
     @Test
     public void Nice5() {
         Camera camera = new Camera(new Point(0, -50, 20), new Vector(0, 3, -1), new Vector(0, 1, 3)) //
@@ -458,7 +460,7 @@ public class ReflectionRefractionTests {
                 .setRayTracer(new RayTracerBasic(scene));
         Geometries[] geometries = new Geometries[13];
         for (int i = 0; i < 13; i++) {
-            geometries[i]=new Geometries();
+            geometries[i] = new Geometries();
         }
         scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), new Double3(0.15)));
         for (int i = 0; i < 100; i++) {
@@ -471,13 +473,13 @@ public class ReflectionRefractionTests {
             geometries[2].add(
                     new Sphere(new Point(0, 0, 1.5), 1.5).setEmission(new Color(orange))
                             .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100))));
-           geometries[3].add(
+            geometries[3].add(
                     new Sphere(new Point(3, 1, 1.5), 1.5).setEmission(new Color(yellow))
                             .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100))));
             geometries[4].add(
                     new Sphere(new Point(-3, 1, 1.5), 1.5).setEmission(new Color(green))
                             .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100))));
-           geometries[5].add(
+            geometries[5].add(
                     new Sphere(new Point(6, 2, 1.5), 1.5).setEmission(new Color(blue))
                             .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100))));
             geometries[6].add(
@@ -510,9 +512,143 @@ public class ReflectionRefractionTests {
         for (int i = 0; i < 13; i++) {
             scene.geometries.add(geometries[i]);
         }
+        scene.lights.add(new DirectionalLight(new Color(200, 200, 200), new Vector(0, 0, -1)));
+        camera.setImageWriter(new ImageWriter("Apple7", 600, 600)) //
+                .renderImage() //
+                .writeToImage();
+    }
+
+    @Test
+    public void Nice6() {
+        Camera camera = new Camera(new Point(0, -50, 20), new Vector(0, 3, -1), new Vector(0, 1, 3)) //
+                .setVPSize(140, 100).setVPDistance(400) //
+                .setRayTracer(new RayTracerBasic(scene));
+        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), new Double3(0.15)));
+        for (int i = 0; i < 200; i++) {
+            scene.geometries.add(new Sphere(new Point(-3.25, 8 * i * 0.01, 3), 0.2).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 200; i++) {
+            scene.geometries.add(new Sphere(new Point(-3.25, 8 * i * 0.01, 1), 0.2).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 200; i++) {
+            scene.geometries.add(new Sphere(new Point(-3.25, 8 * i * 0.01, -3), 0.2).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+
+        scene.geometries.createBox();
+        scene.geometries.autoBVH(5);
+
+        scene.lights.add(new DirectionalLight(new Color(200, 200, 200), new Vector(0, 0, -1)));
+        camera.setImageWriter(new ImageWriter("Apple6", 600, 600)) //
+                .renderImage() //
+                .writeToImage();
+    }
+
+    @Test
+    public void Nice7() {
+        Camera camera = new Camera(new Point(0, -50, 20), new Vector(0, 3, -1), new Vector(0, 1, 3)) //
+                .setVPSize(140, 100).setVPDistance(400) //
+                .setRayTracer(new RayTracerBasic(scene));
+        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), new Double3(0.15)));
+        for (int i = 0; i < 120; i++) {
+            scene.geometries.add(new Sphere(new Point(-9.25, 8 * i * 0.01, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 140; i++) {
+            scene.geometries.add(new Sphere(new Point(-7.25, 8 * i * 0.02, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 160; i++) {
+            scene.geometries.add(new Sphere(new Point(-5.25, 8 * i * 0.03, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 180; i++) {
+            scene.geometries.add(new Sphere(new Point(-3.25, 8 * i * 0.04, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 200; i++) {
+            scene.geometries.add(new Sphere(new Point(-1.25, 8 * i * 0.05, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 220; i++) {
+            scene.geometries.add(new Sphere(new Point(1.25, 8 * i * 0.06, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 240; i++) {
+            scene.geometries.add(new Sphere(new Point(3.25, 8 * i * 0.07, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 260; i++) {
+            scene.geometries.add(new Sphere(new Point(5.25, 8 * i * 0.08, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 280; i++) {
+            scene.geometries.add(new Sphere(new Point(7.25, 8 * i * 0.09, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
+        for (int i = 0; i < 300; i++) {
+            scene.geometries.add(new Sphere(new Point(9.25, 8 * i * 0.1, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)));
+        }
 
         scene.lights.add(new DirectionalLight(new Color(200, 200, 200), new Vector(0, 0, -1)));
         camera.setImageWriter(new ImageWriter("Apple7", 600, 600)) //
+                .renderImage() //
+                .writeToImage();
+    }
+
+    @Test
+    public void Nice8() {
+        Camera camera = new Camera(new Point(0, -50, 20), new Vector(0, 3, -1), new Vector(0, 1, 3)) //
+                .setVPSize(140, 100).setVPDistance(400) //
+                .setRayTracer(new RayTracerBasic(scene));
+        scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), new Double3(0.15)));
+        for (int i = 0; i < 120; i++) {
+            scene.geometries.add(new Sphere(new Point(-9.25, 8 * i * 0.01, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 140; i++) {
+            scene.geometries.add(new Sphere(new Point(-7.25, 8 * i * 0.02, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 160; i++) {
+            scene.geometries.add(new Sphere(new Point(-5.25, 8 * i * 0.03, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 180; i++) {
+            scene.geometries.add(new Sphere(new Point(-3.25, 8 * i * 0.04, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 200; i++) {
+            scene.geometries.add(new Sphere(new Point(-1.25, 8 * i * 0.05, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 220; i++) {
+            scene.geometries.add(new Sphere(new Point(1.25, 8 * i * 0.06, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 240; i++) {
+            scene.geometries.add(new Sphere(new Point(3.25, 8 * i * 0.07, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 260; i++) {
+            scene.geometries.add(new Sphere(new Point(5.25, 8 * i * 0.08, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 280; i++) {
+            scene.geometries.add(new Sphere(new Point(7.25, 8 * i * 0.09, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        for (int i = 0; i < 300; i++) {
+            scene.geometries.add(new Sphere(new Point(9.25, 8 * i * 0.1, -3), 0.1).setEmission(new Color(red))
+                    .setMaterial((new Material().setKd(0.5).setKs(0.5).setShininess(100)).setKr(0.5).setKt(0.5)).createBox());
+        }
+        scene.geometries.createBox();
+        scene.geometries.autoBVH(2);
+        scene.lights.add(new DirectionalLight(new Color(200, 200, 200), new Vector(0, 0, -1)));
+        camera.setImageWriter(new ImageWriter("Apple8", 600, 600)) //
                 .renderImage() //
                 .writeToImage();
     }

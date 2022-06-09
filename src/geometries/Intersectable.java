@@ -16,6 +16,7 @@ public abstract class Intersectable {
 
     /**
      * box feature
+     *
      * @return instance
      */
     public Intersectable createBox() {
@@ -42,16 +43,16 @@ public abstract class Intersectable {
          */
         private boolean privateBoundingIntersection(Ray ray) {
             Point po = ray.getP0();
-            double dfX = 1.0 / ray.getDir().getX();
-            double dfY = 1.0 / ray.getDir().getY();
-            double dfZ = 1.0 / ray.getDir().getZ();
+            double dfX = 1.0f / ray.getDir().getX();
+            double dfY = 1.0f / ray.getDir().getY();
+            double dfZ = 1.0f / ray.getDir().getZ();
 
             double t1 = (min.getX() - po.getX()) * dfX;
             double t2 = (max.getX() - po.getX()) * dfX;
-            double t3 = (min.getX() - po.getX()) * dfY;
-            double t4 = (max.getX() - po.getX()) * dfY;
-            double t5 = (min.getX() - po.getX()) * dfZ;
-            double t6 = (max.getX() - po.getX()) * dfZ;
+            double t3 = (min.getY() - po.getY()) * dfY;
+            double t4 = (max.getY() - po.getY()) * dfY;
+            double t5 = (min.getZ() - po.getZ()) * dfZ;
+            double t6 = (max.getZ() - po.getZ()) * dfZ;
 
             double tmin = Math.max(Math.max(Math.min(t1, t2), Math.min(t3, t4)), Math.min(t5, t6));
             double tmax = Math.min(Math.min(Math.max(t1, t2), Math.max(t3, t4)), Math.max(t5, t6));
@@ -69,9 +70,9 @@ public abstract class Intersectable {
      * @return true in intersect false if not
      */
     public boolean boundingIntersection(Ray ray) {
-        if (box != null)
-            return box.privateBoundingIntersection(ray);
-        return true;
+        if (box == null) return true;
+        return box.privateBoundingIntersection(ray);
+
     }
 
 

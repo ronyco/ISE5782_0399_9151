@@ -63,8 +63,8 @@ public class Sphere extends Geometry {
         double cx = center.getX();
         double cy = center.getY();
         double cz = center.getZ();
-        double r = radius;
-        return new Box(new Point(cx - r, cy - r, cz - r), new Point(cx + r, cy - +r, cz + r));
+        return new Box(new Point(cx - radius, cy - radius, cz - radius),
+                new Point(cx + radius, cy + radius, cz + radius));
     }
 
     @Override
